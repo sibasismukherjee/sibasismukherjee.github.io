@@ -296,9 +296,12 @@
         <h4>Usage</h4>
         <ul>
             <li><a href="#table-list">Table List</a></li>
+            <li><a href="#fuzzy">Fuzzy Search</a></li>
             <li><a href="#data-view">Data View</a></li>
             <li><a href="#filter-dsl">Filter DSL</a></li>
+            <li><a href="#export">Export CSV / JSON</a></li>
             <li><a href="#row-viewer">Row Viewer &amp; Editor</a></li>
+            <li><a href="#schema-browser">Schema Browser</a></li>
             <li><a href="#sql-editor">SQL Editor</a></li>
             <li><a href="#templates">Templates Panel</a></li>
             <li><a href="#history">Query History</a></li>
@@ -341,7 +344,7 @@
             <div class="feature-grid">
                 <div class="feature-card">
                     <h4>k9s-style TUI</h4>
-                    <p>Navigable table list, data view, describe view, and SQL editor — same interaction model as the Kubernetes CLI.</p>
+                    <p>Navigable table list, data view, schema browser, and SQL editor — same interaction model as the Kubernetes CLI.</p>
                 </div>
                 <div class="feature-card">
                     <h4>Connect Anywhere</h4>
@@ -370,6 +373,18 @@
                 <div class="feature-card">
                     <h4>Query History</h4>
                     <p><kbd>Ctrl+R</kbd> in the SQL editor shows the last 50 queries, most-recent-first. Press Enter to reload any entry.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Fuzzy Table Search</h4>
+                    <p>Press <kbd>/</kbd> in the table list for a full-screen fuzzy finder across all schemas. Matched characters highlighted in blue; ranked by consecutive runs and word boundaries.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Export to CSV / JSON</h4>
+                    <p>Press <kbd>E</kbd> (Shift+E) in the data view to export the full result set (no page limit) to a file. Interactive format + path prompt; NULL → empty string in CSV, <code>null</code> in JSON.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Schema Browser</h4>
+                    <p>Press <kbd>d</kbd> from the table list or data view to open a 4-tab panel: Columns, Indexes, Constraints, and a reconstructed DDL view. Navigate with <kbd>1</kbd>–<kbd>4</kbd> or <kbd>Tab</kbd>.</p>
                 </div>
                 <div class="feature-card">
                     <h4>Multi-Arch Releases</h4>
@@ -436,35 +451,58 @@ pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></p
         <section id="table-list">
             <h2>Table List</h2>
             <p>The default view after connecting. Lists all tables and views in the database, grouped by schema.</p>
-            <pre> pgview              │  &lt;↵&gt; view  &lt;d&gt; describe  &lt;i&gt; stats            │  Tables
- admin@mydb · local  │  &lt;/&gt; filter  &lt;r&gt; refresh  &lt;e&gt; SQL  &lt;q&gt; quit  │  public
+            <pre> pgview              │  &lt;↵&gt; view  &lt;d&gt; schema  &lt;i&gt; stats              │  Tables
+ admin@mydb · local  │  &lt;/&gt; search  &lt;r&gt; refresh  &lt;e&gt; SQL  &lt;q&gt; quit  │  public
 ──────────────────────────────────────────────────────────────────────────────────────
   schema    table                   type
   public    orders                  BASE TABLE
-▶ public    routes                  BASE TABLE
-  reporting daily_summary           VIEW</pre>
+  public    products                BASE TABLE
+▶ public    customers               BASE TABLE
+  reporting monthly_totals          VIEW</pre>
             <table class="doc-table">
                 <tr><th>Key</th><th>Action</th></tr>
                 <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Move selection</td></tr>
                 <tr><td><kbd>Enter</kbd></td><td>Open data view for the selected table</td></tr>
-                <tr><td><kbd>d</kbd></td><td>Describe columns (schema, type, nullability, defaults)</td></tr>
+                <tr><td><kbd>d</kbd></td><td>Open schema browser (Columns, Indexes, Constraints, DDL)</td></tr>
                 <tr><td><kbd>i</kbd></td><td>Show table stats (estimated row count, PK, index count)</td></tr>
-                <tr><td><kbd>/</kbd></td><td>Filter table list by name</td></tr>
+                <tr><td><kbd>/</kbd></td><td>Fuzzy search across all schemas and tables</td></tr>
                 <tr><td><kbd>r</kbd></td><td>Refresh the list</td></tr>
                 <tr><td><kbd>e</kbd></td><td>Open SQL editor</td></tr>
                 <tr><td><kbd>q</kbd></td><td>Quit</td></tr>
             </table>
         </section>
 
+        <section id="fuzzy">
+            <h2>Fuzzy Table Search</h2>
+            <p>Press <kbd>/</kbd> from the table list to open a full-screen fuzzy finder that searches across all schemas simultaneously. Results update as you type.</p>
+            <pre> pgview              │  &lt;↵&gt; open  &lt;Esc&gt; cancel  │  &lt;↑↓&gt; navigate  │  type to filter all schemas
+ admin@mydb · local  │
+──────────────────────────────────────────────────────────────────────────────────────
+ / ord
+──────────────────────────────────────────────────────────────────────────────────────
+   public.orders
+   public.order_items
+   reporting.daily_order_summary</pre>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td>Type characters</td><td>Filter all schemas and tables by fuzzy match (subsequence)</td></tr>
+                <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Navigate results</td></tr>
+                <tr><td><kbd>Enter</kbd></td><td>Open selected table's data view</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Close and return to table list</td></tr>
+            </table>
+            <p>Matched characters are highlighted in blue. Schema names shown in muted gray, table names in white. Results are ranked by match quality — consecutive character runs and word-boundary hits score higher than scattered matches.</p>
+        </section>
+
         <section id="data-view">
             <h2>Data View</h2>
             <p>Shows rows of the selected table, 200 per page. Type-aware cell colouring: numbers, booleans, UUIDs, timestamps, JSON, and NULL each have a distinct colour.</p>
-            <pre> pgview              │  &lt;Esc&gt; back  &lt;g&gt; top  &lt;G&gt; bottom  │  Data  public.routes
- admin@mydb · local  │  &lt;d&gt; describe  &lt;f&gt; row view/edit  │  42 rows  ~1.2K est · PK: id
-──────────────────────────────────────────────────────────────────────────────────────
+            <pre> pgview              │  &lt;Esc&gt; back  &lt;g&gt; top  &lt;G&gt; bottom  │  &lt;n&gt;/&lt;p&gt; page  │  &lt;/&gt; filter  │  Data  public.customers
+ admin@mydb · local  │  &lt;d&gt; schema  &lt;f&gt; row view/edit  &lt;E&gt; export  &lt;i&gt; stats  │  42 rows  ~1.2K est · PK: id
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
   id    name              status    created_at           tags
 ▶ 1     Alice Johnson     active    2024-01-15 09:23:11  {platform,growth}
   3     Carol White       active    2024-03-19 11:02:44  {platform,api}
+  7     Eve Martinez      active    2024-05-01 16:14:09  {growth}
 
  WHERE "status"::text ILIKE 'active'</pre>
             <table class="doc-table">
@@ -474,7 +512,8 @@ pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></p
                 <tr><td><kbd>g</kbd> / <kbd>G</kbd></td><td>Jump to top / bottom of current page</td></tr>
                 <tr><td><kbd>/</kbd></td><td>Open filter prompt</td></tr>
                 <tr><td><kbd>f</kbd></td><td>Open row viewer / editor</td></tr>
-                <tr><td><kbd>d</kbd></td><td>Describe columns of this table</td></tr>
+                <tr><td><kbd>d</kbd></td><td>Open schema browser for this table</td></tr>
+                <tr><td><kbd>E</kbd></td><td>Export full result set to CSV or JSON (interactive format + path prompt)</td></tr>
                 <tr><td><kbd>i</kbd></td><td>Refresh table stats</td></tr>
                 <tr><td><kbd>r</kbd></td><td>Re-run current query</td></tr>
                 <tr><td><kbd>e</kbd></td><td>Open SQL editor (pre-filled with last query)</td></tr>
@@ -509,10 +548,26 @@ pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></p
 / johnson</pre>
         </section>
 
+        <section id="export">
+            <h2>Export to CSV / JSON</h2>
+            <p>Press <kbd>E</kbd> (Shift+E) from the data view to start an interactive two-step export flow. Works for both table browse and SQL query results.</p>
+            <table class="doc-table">
+                <tr><th>Step</th><th>Prompt</th><th>Notes</th></tr>
+                <tr><td>1</td><td><code>export format:</code></td><td>Type <code>csv</code> or <code>json</code>, press <kbd>Enter</kbd></td></tr>
+                <tr><td>2</td><td><code>export to:</code></td><td>Pre-filled with <code>~/export_&lt;table&gt;_&lt;timestamp&gt;.&lt;ext&gt;</code>; edit path, press <kbd>Enter</kbd></td></tr>
+            </table>
+            <div class="callout">
+                The export re-runs the current query <strong>without</strong> <code>LIMIT</code> or
+                <code>OFFSET</code> so <em>all rows</em> are written to the file, not just the visible
+                page. Success or error is shown in the footer bar.
+            </div>
+            <p>NULL values are written as an empty string in CSV and as <code>null</code> in JSON.</p>
+        </section>
+
         <section id="row-viewer">
             <h2>Row Viewer &amp; Editor</h2>
             <p>Press <kbd>f</kbd> in the data view to open a full-screen two-column table showing every column of the selected row alongside its value.</p>
-            <pre> Row Viewer  &lt;e&gt;/&lt;↵&gt; edit  &lt;Ctrl+S&gt; save  &lt;Esc&gt; close  · public.routes · row 1
+            <pre> Row Viewer  &lt;e&gt;/&lt;↵&gt; edit  &lt;Ctrl+S&gt; save  &lt;Esc&gt; close  · public.customers · row 1
 ─────────────────────┬──────────────────────────────────────────────────────────
  Column              │ Value
 ─────────────────────┼──────────────────────────────────────────────────────────
@@ -543,6 +598,48 @@ pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></p
             </div>
         </section>
 
+        <section id="schema-browser">
+            <h2>Schema Browser</h2>
+            <p>Press <kbd>d</kbd> from the table list or data view to open a four-tab panel for the selected table. Navigate tabs with <kbd>1</kbd>–<kbd>4</kbd> or <kbd>Tab</kbd> / <kbd>Shift+Tab</kbd>.</p>
+            <pre> pgview              │  &lt;1&gt; Columns  &lt;2&gt; Indexes  &lt;3&gt; Constraints  &lt;4&gt; DDL  │  Schema  public.customers
+ admin@mydb · local  │  &lt;Tab&gt; next tab  │  &lt;↵&gt; view data  &lt;e&gt; SQL  &lt;Esc&gt; back  &lt;q&gt; quit
+─────────────────────────────────────────────────────────────────────────────────────────
+ [1] Columns   [2] Indexes   [3] Constraints   [4] DDL
+──────────────────────────────────────────────────────────
+  Column       Type                    Nullable   Default
+  id           bigint                  NOT NULL
+  name         character varying(120)  NOT NULL
+▶ status       text                    NULL       'active'
+  created_at   timestamp with tz       NOT NULL   now()
+  tags         text[]                  NULL</pre>
+            <p>The <strong>DDL tab</strong> (<kbd>4</kbd>) shows a reconstructed <code>CREATE TABLE</code> statement using accurate type names from <code>pg_catalog.format_type</code>, inline constraints, and standalone <code>CREATE INDEX</code> statements for non-primary indexes:</p>
+            <pre> [1] Columns   [2] Indexes   [3] Constraints   [4] DDL
+──────────────────────────────────────────────────────────
+ CREATE TABLE "public"."customers" (
+   "id"          bigint  NOT NULL  DEFAULT nextval('customers_id_seq'),
+   "name"        character varying(120)  NOT NULL,
+   "status"      text  DEFAULT 'active',
+   "created_at"  timestamp with time zone  NOT NULL  DEFAULT now(),
+   "tags"        text[],
+   CONSTRAINT "customers_pkey"  PRIMARY KEY  (id),
+   CONSTRAINT "customers_status_check"  CHECK  (status = ANY (ARRAY['active','inactive']))
+ );
+
+ CREATE INDEX idx_customers_status ON public.customers USING btree (status);</pre>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td><kbd>1</kbd></td><td>Columns tab — name, type, nullability, default</td></tr>
+                <tr><td><kbd>2</kbd></td><td>Indexes tab — name, unique/primary flags, method, definition</td></tr>
+                <tr><td><kbd>3</kbd></td><td>Constraints tab — name, type (PK / FK / UNIQUE / CHECK), definition</td></tr>
+                <tr><td><kbd>4</kbd></td><td>DDL tab — reconstructed <code>CREATE TABLE</code> with constraints and indexes</td></tr>
+                <tr><td><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd></td><td>Cycle forward / backward through tabs</td></tr>
+                <tr><td><kbd>Enter</kbd></td><td>View data rows for this table (Columns, Indexes, Constraints tabs)</td></tr>
+                <tr><td><kbd>e</kbd></td><td>Open SQL editor</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Back to table list</td></tr>
+                <tr><td><kbd>q</kbd></td><td>Quit</td></tr>
+            </table>
+        </section>
+
         <section id="sql-editor">
             <h2>SQL Editor</h2>
             <p>Press <kbd>e</kbd> from any view to open a full-screen SQL editor. When opened from the data view it is pre-filled with the last executed query.</p>
@@ -550,7 +647,7 @@ pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></p
  admin@mydb · local  │  &lt;Ctrl+R&gt; history  &lt;Ctrl+T&gt; templates                              │
 ──────────────────────────────────────────────────────────────────────────────────────────
   SELECT *
-  FROM "public"."routes"
+  FROM "public"."customers"
   WHERE status = 'active'
   LIMIT 100▌</pre>
             <h3>Schema-aware Tab completion</h3>
@@ -577,7 +674,7 @@ pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></p
             <p><kbd>Ctrl+T</kbd> opens a panel on the left side of the SQL editor. Templates are pre-filled with the current table's real column names, quoted identifiers, and primary-key column.</p>
             <pre>  Templates                  │
   ── Query ─────────────     │  SELECT *
-   SELECT *                  │  FROM "public"."routes"
+   SELECT *                  │  FROM "public"."customers"
    SELECT cols               │  LIMIT 100▌
    SELECT WHERE              │
    COUNT                     │
@@ -612,7 +709,7 @@ pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></p
 
         <section id="mouse">
             <h2>Mouse &amp; Touchpad</h2>
-            <p>All table views (table list, data view, describe view) support scroll gestures:</p>
+            <p>All table views (table list, data view, schema browser) support scroll gestures:</p>
             <table class="doc-table">
                 <tr><th>Gesture</th><th>Action</th></tr>
                 <tr><td>Mouse wheel up / two-finger swipe up</td><td>Move row selection up</td></tr>
@@ -630,22 +727,31 @@ pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></p
                 <tr><th>Key</th><th>Action</th></tr>
                 <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Move selection</td></tr>
                 <tr><td><kbd>Enter</kbd></td><td>View data rows</td></tr>
-                <tr><td><kbd>d</kbd></td><td>Describe columns</td></tr>
-                <tr><td><kbd>i</kbd></td><td>Table stats</td></tr>
-                <tr><td><kbd>/</kbd></td><td>Filter by name</td></tr>
+                <tr><td><kbd>d</kbd></td><td>Open schema browser</td></tr>
+                <tr><td><kbd>i</kbd></td><td>Table stats (estimated rows, PK, index count)</td></tr>
+                <tr><td><kbd>/</kbd></td><td>Fuzzy search across all schemas and tables</td></tr>
                 <tr><td><kbd>r</kbd></td><td>Refresh list</td></tr>
                 <tr><td><kbd>e</kbd></td><td>Open SQL editor</td></tr>
                 <tr><td><kbd>q</kbd></td><td>Quit</td></tr>
+            </table>
+            <h3>Fuzzy Search</h3>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td>Type characters</td><td>Filter all schemas and tables</td></tr>
+                <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Navigate results</td></tr>
+                <tr><td><kbd>Enter</kbd></td><td>Open selected table's data view</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Close, return to table list</td></tr>
             </table>
             <h3>Data View</h3>
             <table class="doc-table">
                 <tr><th>Key</th><th>Action</th></tr>
                 <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Move row selection</td></tr>
-                <tr><td><kbd>n</kbd> / <kbd>p</kbd></td><td>Next / previous page</td></tr>
+                <tr><td><kbd>n</kbd> / <kbd>p</kbd></td><td>Next / previous page (200 rows)</td></tr>
                 <tr><td><kbd>g</kbd> / <kbd>G</kbd></td><td>Top / bottom of page</td></tr>
                 <tr><td><kbd>/</kbd></td><td>Filter prompt</td></tr>
                 <tr><td><kbd>f</kbd></td><td>Row viewer / editor</td></tr>
-                <tr><td><kbd>d</kbd></td><td>Describe columns</td></tr>
+                <tr><td><kbd>d</kbd></td><td>Open schema browser</td></tr>
+                <tr><td><kbd>E</kbd></td><td>Export to CSV or JSON</td></tr>
                 <tr><td><kbd>i</kbd></td><td>Table stats</td></tr>
                 <tr><td><kbd>r</kbd></td><td>Re-run query</td></tr>
                 <tr><td><kbd>e</kbd></td><td>SQL editor</td></tr>
@@ -658,6 +764,19 @@ pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></p
                 <tr><td><kbd>e</kbd> / <kbd>Enter</kbd></td><td>Edit selected field</td></tr>
                 <tr><td><kbd>Ctrl+S</kbd></td><td>Save changes (UPDATE)</td></tr>
                 <tr><td><kbd>Esc</kbd></td><td>Close, return to data view</td></tr>
+            </table>
+            <h3>Schema Browser</h3>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td><kbd>1</kbd></td><td>Columns tab</td></tr>
+                <tr><td><kbd>2</kbd></td><td>Indexes tab</td></tr>
+                <tr><td><kbd>3</kbd></td><td>Constraints tab</td></tr>
+                <tr><td><kbd>4</kbd></td><td>DDL tab</td></tr>
+                <tr><td><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd></td><td>Cycle forward / backward through tabs</td></tr>
+                <tr><td><kbd>Enter</kbd></td><td>View data rows</td></tr>
+                <tr><td><kbd>e</kbd></td><td>SQL editor</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Back to table list</td></tr>
+                <tr><td><kbd>q</kbd></td><td>Quit</td></tr>
             </table>
             <h3>SQL Editor</h3>
             <table class="doc-table">
