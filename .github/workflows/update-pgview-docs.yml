@@ -1,0 +1,56 @@
+name: Update pgview Docs
+
+on:
+  repository_dispatch:
+    types: [pgview-docs-updated]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'pgview version (e.g. 0.4.2)'
+        required: true
+
+jobs:
+  update:
+    name: Patch pgview.html version and push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: ver
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            VERSION="${{ github.event.client_payload.version }}"
+          else
+            VERSION="${{ github.event.inputs.version }}"
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Updating to v${VERSION}"
+
+      - name: Patch version badge in pgview.html
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          # Replace the version badge text — e.g. v0.4.1 → v0.4.2
+          sed -i "s|<span class=\"badge badge-teal\">v[0-9]*\.[0-9]*\.[0-9]*</span>|<span class=\"badge badge-teal\">v${VERSION}</span>|g" pgview.html
+
+          # Also update try-pgview.html if it has a version reference
+          if [ -f try-pgview.html ]; then
+            sed -i "s|pgview v[0-9]*\.[0-9]*\.[0-9]*|pgview v${VERSION}|g" try-pgview.html
+          fi
+
+          echo "Patched version to v${VERSION}"
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pgview.html try-pgview.html
+          if git diff --cached --quiet; then
+            echo "No changes — already up to date"
+          else
+            git commit -m "docs(pgview): bump version to v${{ steps.ver.outputs.version }}"
+            git push
+          fi
