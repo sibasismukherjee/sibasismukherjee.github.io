@@ -319,7 +319,7 @@
         <section id="introduction">
             <h1>pgview</h1>
             <div class="badges">
-                <span class="badge badge-teal">v0.4.0</span>
+                <span class="badge badge-teal">v0.4.1</span>
                 <span class="badge badge-blue">Go 1.22+</span>
                 <span class="badge badge-gray">MIT</span>
             </div>
@@ -331,15 +331,9 @@
                 and navigate tables, inspect schemas, filter rows, edit data, and run arbitrary SQL
                 queries, all without leaving your terminal.
             </p>
-            <pre> pgview              │  &lt;↵&gt; view  &lt;d&gt; describe  &lt;i&gt; stats            │  Tables
- admin@mydb · local  │  &lt;/&gt; filter  &lt;r&gt; refresh  &lt;e&gt; SQL  &lt;q&gt; quit  │  public
-──────────────────────────────────────────────────────────────────────────────────────
-  schema    table                   type
-  public    orders                  BASE TABLE
-  public    products                BASE TABLE
-▶ public    routes                  BASE TABLE
-  public    services                BASE TABLE
-  reporting daily_summary           VIEW</pre>
+            <img src="img/pgview-demo.gif"
+                 alt="pgview demo — table list, data view, fuzzy search, schema browser, and export"
+                 style="width:100%;border-radius:6px;margin:1.5rem 0;" />
         </section>
 
         <section id="features">
