@@ -36,6 +36,7 @@
 				        <li><a href="#experiences">Experiences</a></li>
 				        <li><a href="#certificates">Professional Certificates</a></li>
 				        <li><a href="#skills">Skills</a></li>
+				        <li><a href="#projects">Projects</a></li>
 						<li><a href="#resume">Hire Me</a></li>
 				    </ul>
 				</nav>
@@ -145,8 +146,46 @@
 		</div>
 	</div>
 
+	<!-- Projects -->
+	<div class="work section second" id="projects">
+		<div class="container">
+			<h1>Open Source<br>Projects</h1>
+			<ul class="work-list">
+				<li>2026 — present</li>
+				<li><a href="https://github.com/sibasismukherjee/pgview">pgview</a></li>
+				<li>A lightweight, keyboard-driven PostgreSQL browser for the terminal — built in Go using the same TUI framework as k9s. Connect to any PostgreSQL-compatible endpoint and navigate tables, filter rows, inspect schemas, and run SQL queries without leaving the terminal.</li>
+			</ul>
+			<ul class="skill-list list-flat">
+				<li>Features</li>
+				<li>k9s-style TUI &nbsp;·&nbsp; Smart filter DSL (col=val, col=%sub%, array &amp; JSONB element-wise) &nbsp;·&nbsp; SQL editor with schema-aware Tab-completion &nbsp;·&nbsp; SQL templates panel (Query / Write / DDL pre-filled with real column names) &nbsp;·&nbsp; Row viewer with inline editing and UPDATE commit &nbsp;·&nbsp; Mouse &amp; touchpad scroll (vertical + horizontal) &nbsp;·&nbsp; Query history panel &nbsp;·&nbsp; Multi-arch binary releases (linux/darwin amd64+arm64)</li>
+			</ul>
+			<ul class="skill-list list-flat">
+				<li>Connect anywhere</li>
+				<li>Direct host:port &nbsp;·&nbsp; pgBouncer &nbsp;·&nbsp; AWS RDS Proxy &nbsp;·&nbsp; SSH tunnel &nbsp;·&nbsp; Full <code>postgres://</code> DSN</li>
+			</ul>
+			<ul class="skill-list list-flat">
+				<li>Stack</li>
+				<li>Go 1.22 &nbsp;·&nbsp; tview &nbsp;·&nbsp; tcell &nbsp;·&nbsp; pgx</li>
+			</ul>
+			<pre style="background:#1e1e1e;color:#d4d4d4;padding:1em;border-radius:4px;overflow-x:auto;font-size:0.75em;line-height:1.6;margin-top:1em;font-family:monospace;"> pgview              │  &lt;Esc&gt; back  &lt;g&gt; top  &lt;G&gt; bottom  │  Data  public.routes
+ admin@mydb · local  │  &lt;d&gt; describe  &lt;f&gt; row view/edit  │  42 rows  ~1.2K est · PK: id
+─────────────────────────────────────────────────────────────────────────────────────────
+  id    name              status    created_at           tags
+▶ 1     Alice Johnson     active    2024-01-15 09:23:11  {platform,growth}
+  3     Carol White       active    2024-03-19 11:02:44  {platform,api}
+  7     Eve Martinez      active    2024-05-01 16:14:09  {growth}
+
+ WHERE "status"::text ILIKE 'active'</pre>
+			<p style="margin-top:1em;">
+				<a href="pgview.html" class="button">Documentation</a>
+				&nbsp;&nbsp;
+				<a href="https://github.com/sibasismukherjee/pgview">View on GitHub →</a>
+			</p>
+		</div>
+	</div>
+
 	<!-- Quote-->
-	
+
 	<div class="container" id="resume">
 		<h1>Hire Me</h1>
 		<ul class="skill-list list-flat">

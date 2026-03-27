@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>pgview — Documentation</title>
+    <meta name="description" content="Documentation for pgview, a keyboard-driven PostgreSQL browser for the terminal." />
+    <link rel="stylesheet" href="css/kube.min.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/custom.min.css" />
+    <link rel="shortcut icon" href="img/favicon.png" />
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            color: #333;
+            background: #fafafa;
+        }
+
+        /* ── Top bar ── */
+        .doc-topbar {
+            background: #1a1a2e;
+            padding: 0.75em 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #4ec9b0;
+        }
+        .doc-topbar .inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .doc-topbar .brand {
+            font-family: 'Playfair Display SC', serif;
+            color: #fff;
+            font-size: 1.25em;
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+        .doc-topbar .brand span { color: #4ec9b0; }
+        .doc-topbar nav a {
+            color: #ccc;
+            text-decoration: none;
+            margin-left: 1.5em;
+            font-size: 0.88em;
+            transition: color 0.2s;
+        }
+        .doc-topbar nav a:hover { color: #fff; }
+
+        /* ── Layout ── */
+        .doc-layout {
+            display: flex;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5em 1em;
+            gap: 2.5em;
+            align-items: flex-start;
+        }
+
+        /* ── Sidebar ── */
+        .doc-sidebar {
+            width: 200px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 4.5em;
+        }
+        .doc-sidebar h4 {
+            font-size: 0.68em;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #999;
+            margin: 1.4em 0 0.4em;
+            font-weight: 700;
+        }
+        .doc-sidebar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .doc-sidebar ul li a {
+            display: block;
+            padding: 0.28em 0 0.28em 0.75em;
+            color: #555;
+            text-decoration: none;
+            font-size: 0.87em;
+            border-left: 3px solid transparent;
+            transition: color 0.15s, border-color 0.15s;
+        }
+        .doc-sidebar ul li a:hover,
+        .doc-sidebar ul li a.active {
+            color: #4ec9b0;
+            border-left-color: #4ec9b0;
+        }
+
+        /* ── Main content ── */
+        .doc-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .doc-content section {
+            margin-bottom: 3em;
+            padding-bottom: 2em;
+            border-bottom: 1px solid #eee;
+        }
+        .doc-content section:last-child { border-bottom: none; }
+
+        .doc-content h1 {
+            font-family: 'Playfair Display SC', serif;
+            font-size: 2.2em;
+            color: #1a1a2e;
+            margin-top: 0;
+            margin-bottom: 0.2em;
+        }
+        .doc-content h2 {
+            font-family: 'Playfair Display SC', serif;
+            font-size: 1.4em;
+            color: #1a1a2e;
+            border-left: 4px solid #4ec9b0;
+            padding-left: 0.6em;
+            margin-top: 2em;
+        }
+        .doc-content h3 {
+            font-size: 1em;
+            font-weight: 700;
+            color: #333;
+            margin-top: 1.5em;
+        }
+        .doc-content p { line-height: 1.75; color: #444; }
+        .doc-content ul { line-height: 1.9; color: #444; }
+        .doc-content a { color: #4ec9b0; text-decoration: none; }
+        .doc-content a:hover { text-decoration: underline; }
+
+        /* ── Badges ── */
+        .badges { margin-bottom: 1em; }
+        .badge {
+            display: inline-block;
+            font-size: 0.72em;
+            font-weight: 700;
+            padding: 0.15em 0.6em;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            vertical-align: middle;
+            margin-right: 0.3em;
+        }
+        .badge-teal  { background: #4ec9b0; color: #1a1a2e; }
+        .badge-gray  { background: #6c757d; color: #fff; }
+        .badge-blue  { background: #569cd6; color: #fff; }
+
+        /* ── Code ── */
+        pre, code { font-family: 'Courier New', Courier, monospace; }
+        code {
+            background: #f0f0f0;
+            padding: 0.1em 0.4em;
+            border-radius: 3px;
+            font-size: 0.85em;
+            color: #c0392b;
+        }
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.2em 1.4em;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.8em;
+            line-height: 1.65;
+            margin: 1em 0;
+        }
+        pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+        .kw  { color: #569cd6; }   /* keyword */
+        .cm  { color: #6a9955; }   /* comment */
+        .st  { color: #ce9178; }   /* string */
+        .op  { color: #4ec9b0; }   /* operator / highlight */
+
+        /* ── Tables ── */
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.87em;
+            margin: 1em 0;
+        }
+        .doc-table th {
+            background: #1a1a2e;
+            color: #fff;
+            text-align: left;
+            padding: 0.6em 0.9em;
+            font-weight: 700;
+        }
+        .doc-table td {
+            padding: 0.55em 0.9em;
+            border-bottom: 1px solid #eee;
+            color: #444;
+            vertical-align: top;
+        }
+        .doc-table tr:nth-child(even) td { background: #f7f7f7; }
+        .doc-table kbd {
+            background: #eee;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 0.1em 0.45em;
+            font-size: 0.85em;
+            font-family: 'Courier New', monospace;
+            color: #333;
+        }
+
+        /* ── Callouts ── */
+        .callout {
+            border-left: 4px solid #4ec9b0;
+            background: #f0fffe;
+            padding: 0.8em 1em;
+            border-radius: 0 4px 4px 0;
+            margin: 1em 0;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .callout.warn { border-color: #dcdcaa; background: #fffef0; }
+
+        /* ── Feature grid ── */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1em;
+            margin: 1.5em 0;
+        }
+        .feature-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-top: 3px solid #4ec9b0;
+            border-radius: 4px;
+            padding: 1em 1.1em;
+        }
+        .feature-card h4 {
+            margin: 0 0 0.4em;
+            font-size: 0.95em;
+            color: #1a1a2e;
+        }
+        .feature-card p {
+            margin: 0;
+            font-size: 0.84em;
+            color: #666;
+            line-height: 1.55;
+        }
+
+        /* ── Footer ── */
+        .doc-footer {
+            background: #1a1a2e;
+            color: #888;
+            text-align: center;
+            padding: 1.5em;
+            font-size: 0.82em;
+            margin-top: 3em;
+        }
+        .doc-footer a { color: #4ec9b0; text-decoration: none; }
+
+        @media (max-width: 700px) {
+            .doc-layout { flex-direction: column; }
+            .doc-sidebar { width: 100%; position: static; }
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="doc-topbar">
+    <div class="inner">
+        <a href="index.html" class="brand">pgview <span>docs</span></a>
+        <nav>
+            <a href="index.html">← Portfolio</a>
+            <a href="https://github.com/sibasismukherjee/pgview" target="_blank">GitHub</a>
+            <a href="https://github.com/sibasismukherjee/pgview/releases" target="_blank">Releases</a>
+        </nav>
+    </div>
+</div>
+
+<div class="doc-layout">
+
+    <!-- Sidebar -->
+    <aside class="doc-sidebar">
+        <h4>Overview</h4>
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#features">Features</a></li>
+        </ul>
+        <h4>Getting Started</h4>
+        <ul>
+            <li><a href="#installation">Installation</a></li>
+            <li><a href="#connecting">Connecting</a></li>
+            <li><a href="#flags">CLI Flags</a></li>
+        </ul>
+        <h4>Usage</h4>
+        <ul>
+            <li><a href="#table-list">Table List</a></li>
+            <li><a href="#data-view">Data View</a></li>
+            <li><a href="#filter-dsl">Filter DSL</a></li>
+            <li><a href="#row-viewer">Row Viewer &amp; Editor</a></li>
+            <li><a href="#sql-editor">SQL Editor</a></li>
+            <li><a href="#templates">Templates Panel</a></li>
+            <li><a href="#history">Query History</a></li>
+            <li><a href="#mouse">Mouse &amp; Touchpad</a></li>
+        </ul>
+        <h4>Reference</h4>
+        <ul>
+            <li><a href="#keyboard">Full Keyboard Reference</a></li>
+            <li><a href="#makefile">Makefile Targets</a></li>
+            <li><a href="#contributing">Contributing</a></li>
+            <li><a href="#license">License</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main content -->
+    <main class="doc-content">
+
+        <section id="introduction">
+            <h1>pgview</h1>
+            <div class="badges">
+                <span class="badge badge-teal">v0.4.0</span>
+                <span class="badge badge-blue">Go 1.22+</span>
+                <span class="badge badge-gray">MIT</span>
+            </div>
+            <p>
+                <strong>pgview</strong> is a lightweight, keyboard-driven PostgreSQL browser for the
+                terminal. Built in Go using the same TUI framework as
+                <a href="https://k9scli.io/" target="_blank">k9s</a>, it lets you connect to any
+                PostgreSQL-compatible endpoint — direct host, pgBouncer, RDS Proxy, or SSH tunnel —
+                and navigate tables, inspect schemas, filter rows, edit data, and run arbitrary SQL
+                queries, all without leaving your terminal.
+            </p>
+            <pre> pgview              │  &lt;↵&gt; view  &lt;d&gt; describe  &lt;i&gt; stats            │  Tables
+ admin@mydb · local  │  &lt;/&gt; filter  &lt;r&gt; refresh  &lt;e&gt; SQL  &lt;q&gt; quit  │  public
+──────────────────────────────────────────────────────────────────────────────────────
+  schema    table                   type
+  public    orders                  BASE TABLE
+  public    products                BASE TABLE
+▶ public    routes                  BASE TABLE
+  public    services                BASE TABLE
+  reporting daily_summary           VIEW</pre>
+        </section>
+
+        <section id="features">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>k9s-style TUI</h4>
+                    <p>Navigable table list, data view, describe view, and SQL editor — same interaction model as the Kubernetes CLI.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Connect Anywhere</h4>
+                    <p>host:port, pgBouncer, RDS Proxy, SSH tunnel, or a full <code>postgres://</code> DSN. PgBouncer simple-query protocol supported.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Smart Filter DSL</h4>
+                    <p>Press <kbd>/</kbd> to filter rows with <code>col=val</code>, <code>col=%sub%</code>, comparisons, or free text. Array and JSONB columns match element-wise.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>SQL Editor</h4>
+                    <p>Full-screen editor with schema-aware Tab completion — type-matched operators, table names in FROM/JOIN, column names in SELECT/WHERE.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>SQL Templates</h4>
+                    <p><kbd>Ctrl+T</kbd> opens a side panel of pre-filled Query, Write, and DDL templates built from the current table's real column and PK names.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Row Viewer &amp; Editor</h4>
+                    <p>Press <kbd>f</kbd> to open a full-screen two-column view of the selected row. Edit any field in-place and commit with <kbd>Ctrl+S</kbd>.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Mouse &amp; Touchpad</h4>
+                    <p>Vertical scroll moves row selection. Horizontal two-finger swipe pans wide column sets. Works in all table views.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Query History</h4>
+                    <p><kbd>Ctrl+R</kbd> in the SQL editor shows the last 50 queries, most-recent-first. Press Enter to reload any entry.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Multi-Arch Releases</h4>
+                    <p>Pre-built binaries for linux/amd64, linux/arm64, darwin/amd64, and darwin/arm64 on every GitHub release.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="installation">
+            <h2>Installation</h2>
+            <h3>Prerequisites</h3>
+            <p>Go 1.22 or later — <a href="https://go.dev/dl/" target="_blank">go.dev/dl</a></p>
+
+            <h3>Download a binary</h3>
+            <p>Pre-built binaries are available on the
+            <a href="https://github.com/sibasismukherjee/pgview/releases" target="_blank">Releases page</a>
+            for linux and macOS (amd64 and arm64).</p>
+            <pre><code><span class="cm"># macOS arm64 example</span>
+curl -L https://github.com/sibasismukherjee/pgview/releases/latest/download/pgview-darwin-arm64 \
+  -o /usr/local/bin/pgview
+chmod +x /usr/local/bin/pgview</code></pre>
+
+            <h3>Build from source</h3>
+            <pre><code>git clone https://github.com/sibasismukherjee/pgview.git
+cd pgview
+make build        <span class="cm"># produces ./pgview</span></code></pre>
+
+            <h3>Install to PATH</h3>
+            <pre><code>make install      <span class="cm"># go install — places binary in $(go env GOPATH)/bin</span></code></pre>
+        </section>
+
+        <section id="connecting">
+            <h2>Connecting</h2>
+            <pre><code><span class="cm"># Interactive prompts for all connection details</span>
+pgview
+
+<span class="cm"># Host and port with explicit credentials</span>
+pgview -url myproxy.internal:5432 -username myuser -dbname mydb
+
+<span class="cm"># Full DSN (password embedded in URL)</span>
+pgview -url <span class="st">"postgres://myuser:secret@localhost:5432/mydb?sslmode=disable"</span>
+
+<span class="cm"># Disable SSL for local development</span>
+pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></pre>
+            <div class="callout">
+                Passwords are never stored. If omitted from the DSN, pgview prompts for them
+                securely with no terminal echo.
+            </div>
+        </section>
+
+        <section id="flags">
+            <h2>CLI Flags</h2>
+            <table class="doc-table">
+                <tr><th>Flag</th><th>Description</th><th>Default</th></tr>
+                <tr><td><code>-url</code></td><td>PostgreSQL connection URL — host, host:port, or <code>postgres://…</code></td><td><em>prompted</em></td></tr>
+                <tr><td><code>-username</code></td><td>Database username</td><td><em>prompted</em></td></tr>
+                <tr><td><code>-password</code></td><td>Database password (prompted securely if omitted)</td><td><em>prompted</em></td></tr>
+                <tr><td><code>-dbname</code></td><td>Database name</td><td><code>postgres</code></td></tr>
+                <tr><td><code>-sslmode</code></td><td><code>disable</code> | <code>allow</code> | <code>prefer</code> | <code>require</code></td><td><code>prefer</code></td></tr>
+                <tr><td><code>-version</code></td><td>Print version and exit</td><td>—</td></tr>
+            </table>
+        </section>
+
+        <section id="table-list">
+            <h2>Table List</h2>
+            <p>The default view after connecting. Lists all tables and views in the database, grouped by schema.</p>
+            <pre> pgview              │  &lt;↵&gt; view  &lt;d&gt; describe  &lt;i&gt; stats            │  Tables
+ admin@mydb · local  │  &lt;/&gt; filter  &lt;r&gt; refresh  &lt;e&gt; SQL  &lt;q&gt; quit  │  public
+──────────────────────────────────────────────────────────────────────────────────────
+  schema    table                   type
+  public    orders                  BASE TABLE
+▶ public    routes                  BASE TABLE
+  reporting daily_summary           VIEW</pre>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Move selection</td></tr>
+                <tr><td><kbd>Enter</kbd></td><td>Open data view for the selected table</td></tr>
+                <tr><td><kbd>d</kbd></td><td>Describe columns (schema, type, nullability, defaults)</td></tr>
+                <tr><td><kbd>i</kbd></td><td>Show table stats (estimated row count, PK, index count)</td></tr>
+                <tr><td><kbd>/</kbd></td><td>Filter table list by name</td></tr>
+                <tr><td><kbd>r</kbd></td><td>Refresh the list</td></tr>
+                <tr><td><kbd>e</kbd></td><td>Open SQL editor</td></tr>
+                <tr><td><kbd>q</kbd></td><td>Quit</td></tr>
+            </table>
+        </section>
+
+        <section id="data-view">
+            <h2>Data View</h2>
+            <p>Shows rows of the selected table, 200 per page. Type-aware cell colouring: numbers, booleans, UUIDs, timestamps, JSON, and NULL each have a distinct colour.</p>
+            <pre> pgview              │  &lt;Esc&gt; back  &lt;g&gt; top  &lt;G&gt; bottom  │  Data  public.routes
+ admin@mydb · local  │  &lt;d&gt; describe  &lt;f&gt; row view/edit  │  42 rows  ~1.2K est · PK: id
+──────────────────────────────────────────────────────────────────────────────────────
+  id    name              status    created_at           tags
+▶ 1     Alice Johnson     active    2024-01-15 09:23:11  {platform,growth}
+  3     Carol White       active    2024-03-19 11:02:44  {platform,api}
+
+ WHERE "status"::text ILIKE 'active'</pre>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Move row selection</td></tr>
+                <tr><td><kbd>n</kbd> / <kbd>p</kbd></td><td>Next / previous page (200 rows per page)</td></tr>
+                <tr><td><kbd>g</kbd> / <kbd>G</kbd></td><td>Jump to top / bottom of current page</td></tr>
+                <tr><td><kbd>/</kbd></td><td>Open filter prompt</td></tr>
+                <tr><td><kbd>f</kbd></td><td>Open row viewer / editor</td></tr>
+                <tr><td><kbd>d</kbd></td><td>Describe columns of this table</td></tr>
+                <tr><td><kbd>i</kbd></td><td>Refresh table stats</td></tr>
+                <tr><td><kbd>r</kbd></td><td>Re-run current query</td></tr>
+                <tr><td><kbd>e</kbd></td><td>Open SQL editor (pre-filled with last query)</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Back to table list (clears filter)</td></tr>
+            </table>
+        </section>
+
+        <section id="filter-dsl">
+            <h2>Filter DSL</h2>
+            <p>Press <kbd>/</kbd> in the data view to open the filter prompt. Terms are whitespace-separated and AND-ed together.</p>
+            <table class="doc-table">
+                <tr><th>Input</th><th>Behaviour</th></tr>
+                <tr><td><code>col=val</code></td><td>Exact match — <code>ILIKE 'val'</code> for scalars, <code>'val' = ANY(col)</code> for arrays</td></tr>
+                <tr><td><code>col=%val%</code></td><td>Substring match — element-wise for arrays and JSONB</td></tr>
+                <tr><td><code>col!=val</code></td><td>Negation</td></tr>
+                <tr><td><code>col&gt;val</code> / <code>col&gt;=val</code></td><td>Numeric or date comparison</td></tr>
+                <tr><td><code>name="john doe"</code></td><td>Quote values that contain spaces</td></tr>
+                <tr><td><code>freetext</code></td><td>Search across all columns with <code>ILIKE '%freetext%'</code></td></tr>
+            </table>
+            <div class="callout">
+                Array columns (<code>text[]</code>, <code>int[]</code>, <code>uuid[]</code>) and JSONB columns
+                are detected automatically from PostgreSQL OIDs and matched element-wise rather than casting
+                the whole value to text.
+            </div>
+            <pre><span class="cm"># Show only active rows with a specific tag</span>
+/ status=active tags=platform
+
+<span class="cm"># Date range on a timestamp column</span>
+/ created_at&gt;=2024-01-01 created_at&lt;2025-01-01
+
+<span class="cm"># Free-text search across all columns</span>
+/ johnson</pre>
+        </section>
+
+        <section id="row-viewer">
+            <h2>Row Viewer &amp; Editor</h2>
+            <p>Press <kbd>f</kbd> in the data view to open a full-screen two-column table showing every column of the selected row alongside its value.</p>
+            <pre> Row Viewer  &lt;e&gt;/&lt;↵&gt; edit  &lt;Ctrl+S&gt; save  &lt;Esc&gt; close  · public.routes · row 1
+─────────────────────┬──────────────────────────────────────────────────────────
+ Column              │ Value
+─────────────────────┼──────────────────────────────────────────────────────────
+ id                  │  1
+ name                │  Alice Johnson
+▶ status             │  active                              (edited)
+ created_at          │  2024-01-15 09:23:11
+ tags                │  {platform,growth}
+─────────────────────┴──────────────────────────────────────────────────────────
+
+ 1 unsaved change(s) — Ctrl+S to save, Esc to discard
+
+ edit status  ▏ inactive▌</pre>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Navigate fields</td></tr>
+                <tr><td><kbd>e</kbd> / <kbd>Enter</kbd></td><td>Edit the selected field (input bar pre-filled with current value)</td></tr>
+                <tr><td><kbd>Ctrl+S</kbd></td><td>Save — runs <code>UPDATE … SET … WHERE pk = …</code> and refreshes the data view</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Close and return to data view</td></tr>
+            </table>
+            <p>Modified fields are highlighted in teal with an <code>(edited)</code> marker.
+            The footer shows a count of unsaved changes.
+            Type <code>NULL</code> (any case) to set a field to SQL NULL.</p>
+            <div class="callout warn">
+                The <code>WHERE</code> clause always uses the <strong>original</strong> primary-key
+                value loaded from the database, so editing a PK column itself is safe — the correct
+                row is still targeted.
+            </div>
+        </section>
+
+        <section id="sql-editor">
+            <h2>SQL Editor</h2>
+            <p>Press <kbd>e</kbd> from any view to open a full-screen SQL editor. When opened from the data view it is pre-filled with the last executed query.</p>
+            <pre> pgview              │  &lt;Ctrl+E&gt; run  &lt;Tab&gt; complete  &lt;Ctrl+L&gt; clear  &lt;Esc&gt; cancel  │  SQL Editor
+ admin@mydb · local  │  &lt;Ctrl+R&gt; history  &lt;Ctrl+T&gt; templates                              │
+──────────────────────────────────────────────────────────────────────────────────────────
+  SELECT *
+  FROM "public"."routes"
+  WHERE status = 'active'
+  LIMIT 100▌</pre>
+            <h3>Schema-aware Tab completion</h3>
+            <p>Completion is clause-sensitive. Pressing <kbd>Tab</kbd> prioritises suggestions based on context:</p>
+            <ol>
+                <li>Type-matched operator when the previous token is a known column in WHERE/ON/HAVING — <code>LIKE</code>/<code>ILIKE</code> for text, <code>&gt;=</code>/<code>&lt;=</code> for timestamps, <code>IS TRUE</code>/<code>IS FALSE</code> for booleans, <code>= ANY(</code> for arrays, <code>-&gt;</code>/<code>-&gt;&gt;</code> for JSON</li>
+                <li>Table name in FROM/JOIN context</li>
+                <li>Column name in SELECT/WHERE/ORDER BY context</li>
+                <li>SQL keyword or table name as fallback</li>
+            </ol>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td><kbd>Ctrl+E</kbd></td><td>Execute query; results replace the data view</td></tr>
+                <tr><td><kbd>Tab</kbd></td><td>Context-aware completion popup</td></tr>
+                <tr><td><kbd>Ctrl+T</kbd></td><td>Open templates panel</td></tr>
+                <tr><td><kbd>Ctrl+R</kbd></td><td>Open query history panel</td></tr>
+                <tr><td><kbd>Ctrl+L</kbd></td><td>Clear editor</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Cancel and return to previous view</td></tr>
+            </table>
+        </section>
+
+        <section id="templates">
+            <h2>Templates Panel</h2>
+            <p><kbd>Ctrl+T</kbd> opens a panel on the left side of the SQL editor. Templates are pre-filled with the current table's real column names, quoted identifiers, and primary-key column.</p>
+            <pre>  Templates                  │
+  ── Query ─────────────     │  SELECT *
+   SELECT *                  │  FROM "public"."routes"
+   SELECT cols               │  LIMIT 100▌
+   SELECT WHERE              │
+   COUNT                     │
+  ── Write ─────────────     │
+   INSERT                    │
+   UPDATE                    │
+   DELETE                    │
+   UPSERT                    │
+  ── DDL ───────────────     │
+   ADD COLUMN                │
+   DROP COLUMN               │
+   CREATE INDEX              │
+   ANALYZE                   │
+   TRUNCATE                  │</pre>
+            <table class="doc-table">
+                <tr><th>Category</th><th>Templates</th></tr>
+                <tr><td><strong>Query</strong></td><td>SELECT *, SELECT cols, SELECT WHERE, COUNT</td></tr>
+                <tr><td><strong>Write</strong></td><td>INSERT, UPDATE, DELETE, UPSERT (ON CONFLICT)</td></tr>
+                <tr><td><strong>DDL</strong></td><td>ADD COLUMN, DROP COLUMN, CREATE INDEX, ANALYZE, TRUNCATE</td></tr>
+            </table>
+            <p>Use <kbd>↑</kbd>/<kbd>↓</kbd> to navigate (category headers are skipped), <kbd>Enter</kbd> to load the template into the editor, <kbd>Esc</kbd> to return focus to the editor.</p>
+            <div class="callout">
+                When opened from the table list with no active table, generic
+                <code>schema</code>, <code>table</code>, and <code>col1</code> placeholders are used.
+            </div>
+        </section>
+
+        <section id="history">
+            <h2>Query History</h2>
+            <p><kbd>Ctrl+R</kbd> in the SQL editor opens a navigable history panel showing the last 50 queries, most-recent-first. Press <kbd>Enter</kbd> to load a query back into the editor, or <kbd>Esc</kbd> to close without loading.</p>
+        </section>
+
+        <section id="mouse">
+            <h2>Mouse &amp; Touchpad</h2>
+            <p>All table views (table list, data view, describe view) support scroll gestures:</p>
+            <table class="doc-table">
+                <tr><th>Gesture</th><th>Action</th></tr>
+                <tr><td>Mouse wheel up / two-finger swipe up</td><td>Move row selection up</td></tr>
+                <tr><td>Mouse wheel down / two-finger swipe down</td><td>Move row selection down</td></tr>
+                <tr><td>Two-finger swipe left / WheelLeft</td><td>Pan columns left (wide result sets)</td></tr>
+                <tr><td>Two-finger swipe right / WheelRight</td><td>Pan columns right</td></tr>
+            </table>
+            <p>The SQL editor's text area handles its own scroll natively and is unaffected by the global capture.</p>
+        </section>
+
+        <section id="keyboard">
+            <h2>Full Keyboard Reference</h2>
+            <h3>Table List</h3>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Move selection</td></tr>
+                <tr><td><kbd>Enter</kbd></td><td>View data rows</td></tr>
+                <tr><td><kbd>d</kbd></td><td>Describe columns</td></tr>
+                <tr><td><kbd>i</kbd></td><td>Table stats</td></tr>
+                <tr><td><kbd>/</kbd></td><td>Filter by name</td></tr>
+                <tr><td><kbd>r</kbd></td><td>Refresh list</td></tr>
+                <tr><td><kbd>e</kbd></td><td>Open SQL editor</td></tr>
+                <tr><td><kbd>q</kbd></td><td>Quit</td></tr>
+            </table>
+            <h3>Data View</h3>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Move row selection</td></tr>
+                <tr><td><kbd>n</kbd> / <kbd>p</kbd></td><td>Next / previous page</td></tr>
+                <tr><td><kbd>g</kbd> / <kbd>G</kbd></td><td>Top / bottom of page</td></tr>
+                <tr><td><kbd>/</kbd></td><td>Filter prompt</td></tr>
+                <tr><td><kbd>f</kbd></td><td>Row viewer / editor</td></tr>
+                <tr><td><kbd>d</kbd></td><td>Describe columns</td></tr>
+                <tr><td><kbd>i</kbd></td><td>Table stats</td></tr>
+                <tr><td><kbd>r</kbd></td><td>Re-run query</td></tr>
+                <tr><td><kbd>e</kbd></td><td>SQL editor</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Back to table list</td></tr>
+            </table>
+            <h3>Row Viewer / Editor</h3>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>Navigate fields</td></tr>
+                <tr><td><kbd>e</kbd> / <kbd>Enter</kbd></td><td>Edit selected field</td></tr>
+                <tr><td><kbd>Ctrl+S</kbd></td><td>Save changes (UPDATE)</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Close, return to data view</td></tr>
+            </table>
+            <h3>SQL Editor</h3>
+            <table class="doc-table">
+                <tr><th>Key</th><th>Action</th></tr>
+                <tr><td><kbd>Ctrl+E</kbd></td><td>Execute query</td></tr>
+                <tr><td><kbd>Tab</kbd></td><td>Schema-aware completion</td></tr>
+                <tr><td><kbd>Ctrl+T</kbd></td><td>Templates panel</td></tr>
+                <tr><td><kbd>Ctrl+R</kbd></td><td>Query history</td></tr>
+                <tr><td><kbd>Ctrl+L</kbd></td><td>Clear editor</td></tr>
+                <tr><td><kbd>Esc</kbd></td><td>Cancel, go back</td></tr>
+            </table>
+        </section>
+
+        <section id="makefile">
+            <h2>Makefile Targets</h2>
+            <table class="doc-table">
+                <tr><th>Target</th><th>Action</th></tr>
+                <tr><td><code>make build</code></td><td>Compile binary to <code>./pgview</code></td></tr>
+                <tr><td><code>make install</code></td><td>Install to <code>$(go env GOPATH)/bin</code></td></tr>
+                <tr><td><code>make run</code></td><td>Build and launch interactively</td></tr>
+                <tr><td><code>make test</code></td><td>Run all unit tests with <code>-race</code></td></tr>
+                <tr><td><code>make lint</code></td><td>Run golangci-lint</td></tr>
+                <tr><td><code>make tidy</code></td><td><code>go mod tidy</code></td></tr>
+                <tr><td><code>make clean</code></td><td>Remove build artefacts</td></tr>
+            </table>
+        </section>
+
+        <section id="contributing">
+            <h2>Contributing</h2>
+            <p>Contributions are welcome. The short version:</p>
+            <ol>
+                <li>Search or open an <a href="https://github.com/sibasismukherjee/pgview/issues" target="_blank">Issue</a> first</li>
+                <li>Fork → branch from <code>main</code> → PR</li>
+                <li>Tests and lint must pass — CI runs automatically on every PR</li>
+            </ol>
+            <p>See <a href="https://github.com/sibasismukherjee/pgview/blob/main/CONTRIBUTING.md" target="_blank">CONTRIBUTING.md</a> for the full guide, <a href="https://github.com/sibasismukherjee/pgview/blob/main/CODE_OF_CONDUCT.md" target="_blank">CODE_OF_CONDUCT.md</a> for community standards, and <a href="https://github.com/sibasismukherjee/pgview/blob/main/SECURITY.md" target="_blank">SECURITY.md</a> for reporting vulnerabilities privately.</p>
+        </section>
+
+        <section id="license">
+            <h2>License</h2>
+            <p>pgview is released under the <a href="https://github.com/sibasismukherjee/pgview/blob/main/LICENSE" target="_blank">MIT License</a>. Use it freely in personal and commercial projects.</p>
+        </section>
+
+    </main>
+</div>
+
+<div class="doc-footer">
+    <p>
+        pgview by <a href="index.html">Sibasis Mukherjee</a> &nbsp;·&nbsp;
+        <a href="https://github.com/sibasismukherjee/pgview" target="_blank">GitHub</a> &nbsp;·&nbsp;
+        <a href="https://github.com/sibasismukherjee/pgview/releases" target="_blank">Releases</a> &nbsp;·&nbsp;
+        MIT License
+    </p>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script>
+    /* Highlight active sidebar link on scroll */
+    var sections = document.querySelectorAll('section[id]');
+    var links    = document.querySelectorAll('.doc-sidebar a');
+    window.addEventListener('scroll', function () {
+        var pos = window.scrollY + 120;
+        var current = '';
+        sections.forEach(function (s) {
+            if (s.offsetTop <= pos) current = s.id;
+        });
+        links.forEach(function (a) {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+        });
+    });
+</script>
+</body>
+</html>
