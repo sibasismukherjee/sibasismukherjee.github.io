@@ -342,6 +342,7 @@
 
         <section id="features">
             <h2>Features</h2>
+<!-- BEGIN FEATURE GRID -->
             <div class="feature-grid">
                 <div class="feature-card">
                     <h4>k9s-style TUI</h4>
@@ -349,49 +350,58 @@
                 </div>
                 <div class="feature-card">
                     <h4>Connect Anywhere</h4>
-                    <p>host:port, pgBouncer, RDS Proxy, SSH tunnel, or a full <code>postgres://</code> DSN. PgBouncer simple-query protocol supported.</p>
+                    <p>host:port, pgBouncer, RDS Proxy, SSH tunnel, or a full postgres:// DSN. PgBouncer simple-query protocol supported.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>NULL vs Empty String</h4>
+                    <p>SQL NULL renders as ∅ and empty string as &#x27;&#x27; in all views — visually distinct and never ambiguous.</p>
                 </div>
                 <div class="feature-card">
                     <h4>Smart Filter DSL</h4>
-                    <p>Press <kbd>/</kbd> to filter rows with <code>col=val</code>, <code>col=%sub%</code>, comparisons, or free text. Array and JSONB columns match element-wise.</p>
+                    <p>Filter rows with col=val, col=%sub%, comparisons, or free text. Array and JSONB columns match element-wise. <kbd>/</kbd></p>
                 </div>
                 <div class="feature-card">
                     <h4>SQL Editor</h4>
-                    <p>Full-screen editor with schema-aware Tab completion — type-matched operators, table names in FROM/JOIN, column names in SELECT/WHERE.</p>
+                    <p>Full-screen editor with schema-aware Tab completion — type-matched operators, table names in FROM/JOIN, column names in SELECT/WHERE. <kbd>Ctrl+E</kbd></p>
                 </div>
                 <div class="feature-card">
                     <h4>SQL Templates</h4>
-                    <p><kbd>Ctrl+T</kbd> opens a side panel of pre-filled Query, Write, and DDL templates built from the current table's real column and PK names.</p>
+                    <p>Side panel of pre-filled Query, Write, and DDL templates built from the current table&#x27;s real column and PK names. <kbd>Ctrl+T</kbd></p>
                 </div>
                 <div class="feature-card">
                     <h4>Row Viewer &amp; Editor</h4>
-                    <p>Press <kbd>f</kbd> to open a full-screen two-column view of the selected row. Edit any field in-place and commit with <kbd>Ctrl+S</kbd>.</p>
+                    <p>Full-screen two-column view of any selected row. Edit fields in-place and commit with a single keystroke. <kbd>f</kbd></p>
                 </div>
                 <div class="feature-card">
-                    <h4>Mouse &amp; Touchpad</h4>
-                    <p>Vertical scroll moves row selection. Horizontal two-finger swipe pans wide column sets. Works in all table views.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>Query History</h4>
-                    <p><kbd>Ctrl+R</kbd> in the SQL editor shows the last 50 queries, most-recent-first. Press Enter to reload any entry.</p>
+                    <h4>Audit Logging</h4>
+                    <p>Records every DML with a companion restore SQL file so any session can be reversed. Amber/red badge in the header; DML confirmation prompt above threshold. <kbd>Ctrl+A</kbd></p>
                 </div>
                 <div class="feature-card">
                     <h4>Fuzzy Table Search</h4>
-                    <p>Press <kbd>/</kbd> in the table list for a full-screen fuzzy finder across all schemas. Matched characters highlighted in blue; ranked by consecutive runs and word boundaries.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>Export to CSV / JSON</h4>
-                    <p>Press <kbd>E</kbd> (Shift+E) in the data view to export the full result set (no page limit) to a file. Interactive format + path prompt; NULL → empty string in CSV, <code>null</code> in JSON.</p>
+                    <p>Full-screen fuzzy finder across all schemas. Matched characters highlighted in blue; ranked by consecutive runs and word boundaries. <kbd>/</kbd></p>
                 </div>
                 <div class="feature-card">
                     <h4>Schema Browser</h4>
-                    <p>Press <kbd>d</kbd> from the table list or data view to open a 4-tab panel: Columns, Indexes, Constraints, and a reconstructed DDL view. Navigate with <kbd>1</kbd>–<kbd>4</kbd> or <kbd>Tab</kbd>.</p>
+                    <p>4-tab panel: Columns, Indexes, Constraints, and a reconstructed DDL view. Navigate with 1–4 or Tab. <kbd>d</kbd></p>
                 </div>
                 <div class="feature-card">
-                    <h4>Multi-Arch Releases</h4>
-                    <p>Pre-built binaries for linux/amd64, linux/arm64, darwin/amd64, and darwin/arm64 on every GitHub release.</p>
+                    <h4>Export to CSV / JSON</h4>
+                    <p>Export the full result set — no page limit — to a file. Interactive format and path prompt; NULL → empty string in CSV, null in JSON. <kbd>E</kbd></p>
+                </div>
+                <div class="feature-card">
+                    <h4>Query History</h4>
+                    <p>Navigable panel of the last 50 queries, most-recent-first. Press Enter to reload any entry into the editor. <kbd>Ctrl+R</kbd></p>
+                </div>
+                <div class="feature-card">
+                    <h4>Dynamic Table Stats</h4>
+                    <p>Estimated row count, primary key, and index count appear automatically in the header as you scroll the table list — no extra keystroke needed.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Mouse &amp; Touchpad</h4>
+                    <p>Vertical scroll moves row selection everywhere. Horizontal two-finger swipe pans wide column sets without arrow keys.</p>
                 </div>
             </div>
+<!-- END FEATURE GRID -->
         </section>
 
         <section id="try-it" style="padding:2rem 0;">
