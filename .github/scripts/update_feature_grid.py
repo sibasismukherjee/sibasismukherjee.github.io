@@ -40,6 +40,11 @@ def load_features(path: str) -> list[dict]:
 
     if yaml is not None:
         data = yaml.safe_load(content)
+        if data is None:
+            raise ValueError(
+                f"YAML parsed as None — file may be empty or malformed "
+                f"(first 80 bytes: {content[:80]!r})"
+            )
         return data.get("features", [])
 
     # Minimal fallback parser for the fixed schema (list of mappings under "features:")
