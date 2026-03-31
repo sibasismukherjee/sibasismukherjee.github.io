@@ -27,6 +27,8 @@ jobs:
           else
             VERSION="${{ github.event.inputs.version }}"
           fi
+          # Strip leading 'v' so downstream steps can safely prefix their own 'v'
+          VERSION="${VERSION#v}"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "Updating to v${VERSION}"
 
@@ -44,11 +46,19 @@ jobs:
             pgview.html \
             "${{ steps.ver.outputs.version }}"
 
+      - name: Sync logo SVG from pgview repo
+        run: |
+          curl -fsSL \
+            "https://raw.githubusercontent.com/sibasismukherjee/pgview/main/assets/logo.svg" \
+            -o img/pgview-logo.svg
+          echo "Logo synced ($(wc -c < img/pgview-logo.svg) bytes)"
+
       - name: Patch version in try-pgview.html
         run: |
           if [ -f try-pgview.html ]; then
-            sed -i "s|pgview v[0-9]*\.[0-9]*\.[0-9]*|pgview v${{ steps.ver.outputs.version }}|g" try-pgview.html
-            echo "Patched try-pgview.html"
+            # Match bare version tags like v0.5.1 in badge spans
+            sed -i "s|v[0-9]*\.[0-9]*\.[0-9]*|v${{ steps.ver.outputs.version }}|g" try-pgview.html
+            echo "Patched try-pgview.html to v${{ steps.ver.outputs.version }}"
           fi
 
       - name: Sync demo GIF from pgview repo
@@ -62,7 +72,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add pgview.html try-pgview.html img/pgview-demo.gif
+          git add pgview.html try-pgview.html img/pgview-demo.gif img/pgview-logo.svg
           if git diff --cached --quiet; then
             echo "No changes — already up to date"
           else
