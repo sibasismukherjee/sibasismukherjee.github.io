@@ -338,6 +338,21 @@
             <img src="img/pgview-demo.gif"
                  alt="pgview demo — table list, data view, fuzzy search, schema browser, and export"
                  style="width:100%;border-radius:6px;margin:1.5rem 0;" />
+
+            <div style="background:linear-gradient(135deg,#1a2a3a 0%,#112 100%);border:1px solid #2a4a6a;border-radius:10px;padding:2.5rem 2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;margin-top:1.5rem;">
+                <div style="flex:1;min-width:220px;">
+                    <h2 style="margin:0 0 .5rem;font-size:1.4rem;color:#e8e8e8;">Want to try it right now?</h2>
+                    <p style="margin:0;color:#a0a8b0;line-height:1.6;">
+                        Follow the step-by-step guide to spin up a local Postgres instance with Docker,
+                        load seed data, download the binary, and walk through every feature — no
+                        existing database required.
+                    </p>
+                </div>
+                <a href="try-pgview.html"
+                   style="display:inline-block;padding:.75rem 1.75rem;background:#2196f3;color:#fff;border-radius:6px;font-weight:600;font-size:.95rem;text-decoration:none;white-space:nowrap;flex-shrink:0;">
+                    Try pgview →
+                </a>
+            </div>
         </section>
 
         <section id="features">
@@ -412,23 +427,6 @@
 <!-- END FEATURE GRID -->
         </section>
 
-        <section id="try-it" style="padding:2rem 0;">
-            <div style="background:linear-gradient(135deg,#1a2a3a 0%,#112 100%);border:1px solid #2a4a6a;border-radius:10px;padding:2.5rem 2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
-                <div style="flex:1;min-width:220px;">
-                    <h2 style="margin:0 0 .5rem;font-size:1.4rem;color:#e8e8e8;">Want to try it right now?</h2>
-                    <p style="margin:0;color:#a0a8b0;line-height:1.6;">
-                        Follow the step-by-step guide to spin up a local Postgres instance with Docker,
-                        load seed data, download the binary, and walk through every feature — no
-                        existing database required.
-                    </p>
-                </div>
-                <a href="try-pgview.html"
-                   style="display:inline-block;padding:.75rem 1.75rem;background:#2196f3;color:#fff;border-radius:6px;font-weight:600;font-size:.95rem;text-decoration:none;white-space:nowrap;flex-shrink:0;">
-                    Try pgview →
-                </a>
-            </div>
-        </section>
-
         <section id="installation">
             <h2>Installation</h2>
             <h3>Prerequisites</h3>
@@ -480,8 +478,12 @@ pgview -url localhost -username postgres -dbname mydb -sslmode disable</code></p
                 <tr><td><code>-password</code></td><td>Database password (prompted securely if omitted)</td><td><em>prompted</em></td></tr>
                 <tr><td><code>-dbname</code></td><td>Database name</td><td><code>postgres</code></td></tr>
                 <tr><td><code>-sslmode</code></td><td><code>disable</code> | <code>allow</code> | <code>prefer</code> | <code>require</code></td><td><code>prefer</code></td></tr>
+                <tr><td><code>-audit</code></td><td>Enable audit logging — writes every statement to a JSON-L session log with a companion restore SQL file</td><td>off</td></tr>
+                <tr><td><code>-audit-dir</code></td><td>Directory for audit and restore log files (overrides <code>PGVIEW_AUDIT_DIR</code> and <code>config.yml</code>)</td><td><code>~/.pgview/sessions/</code></td></tr>
+                <tr><td><code>-dml-confirm</code></td><td>Row threshold for DML confirmation prompt (0 = disabled, -1 = always confirm)</td><td>50</td></tr>
                 <tr><td><code>-version</code></td><td>Print version and exit</td><td>—</td></tr>
             </table>
+            <p>See <a href="#audit">Audit Logging</a> for the log format, restore workflow, and DML confirmation threshold.</p>
         </section>
 
         <section id="table-list">

@@ -166,7 +166,7 @@
         <section id="overview">
             <h1>Try pgview</h1>
             <div class="badges">
-                <span class="badge badge-teal">v0.4.1</span>
+                <span class="badge badge-teal">v0.5.1</span>
                 <span class="badge badge-orange">~15 min setup</span>
                 <span class="badge badge-gray">no cloud account needed</span>
             </div>
@@ -208,6 +208,7 @@ sudo usermod -aG docker $USER   <span class="cm"># log out and back in after thi
 <span class="cm"># Verify</span>
 docker --version</code></pre>
                 <p>Then open the Docker Desktop application once so the daemon starts.</p>
+                <p><strong>Windows users:</strong> Run all commands inside <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target="_blank">WSL2</a>. Docker Desktop for Windows with WSL2 integration enabled works with all instructions on this page.</p>
             </div>
 
             <div id="runtime-colima" class="os-content">
@@ -411,35 +412,23 @@ SQL</code></pre>
             <h2>Get pgview</h2>
             <p>
                 pgview is a single static binary — no runtime dependencies, no installer.
-                Download the build that matches your OS and chip from the
-                <a href="https://github.com/sibasismukherjee/pgview/releases/tag/v0.4.1" target="_blank">v0.4.1 release page</a>.
+                The commands below always download the <a href="https://github.com/sibasismukherjee/pgview/releases/latest" target="_blank">latest release</a>.
             </p>
-
-            <table class="doc-table">
-                <tr><th>Platform</th><th>Binary to download</th></tr>
-                <tr><td>macOS — Apple Silicon (M1/M2/M3/M4)</td><td><code>pgview-darwin-arm64</code></td></tr>
-                <tr><td>macOS — Intel</td><td><code>pgview-darwin-amd64</code></td></tr>
-                <tr><td>Linux — x86-64</td><td><code>pgview-linux-amd64</code></td></tr>
-            </table>
 
             <div class="os-tabs" id="install-tabs">
                 <div class="os-tab active" data-group="install" data-target="install-mac-arm">macOS arm64</div>
                 <div class="os-tab" data-group="install" data-target="install-mac-intel">macOS Intel</div>
-                <div class="os-tab" data-group="install" data-target="install-linux">Linux</div>
+                <div class="os-tab" data-group="install" data-target="install-linux">Linux amd64</div>
             </div>
 
             <div id="install-mac-arm" class="os-content active">
-                <pre><code><span class="cm"># Download</span>
-curl -L https://github.com/sibasismukherjee/pgview/releases/download/v0.4.1/pgview-darwin-arm64 \
+                <pre><code><span class="cm"># Fetch latest tag and download matching binary</span>
+TAG=$(curl -sfL "https://api.github.com/repos/sibasismukherjee/pgview/releases/latest" | grep '"tag_name"' | cut -d'"' -f4)
+curl -sfL "https://github.com/sibasismukherjee/pgview/releases/download/${TAG}/pgview_${TAG}_darwin_arm64" \
   -o pgview
 
-<span class="cm"># Make executable</span>
 chmod +x pgview
-
-<span class="cm"># Optional: move to PATH so you can run it from anywhere</span>
 mv pgview /usr/local/bin/pgview
-
-<span class="cm"># Verify</span>
 pgview -version</code></pre>
                 <div class="callout warn">
                     <strong>macOS Gatekeeper warning?</strong> Because the binary is not signed with an Apple
@@ -450,8 +439,8 @@ pgview -version</code></pre>
             </div>
 
             <div id="install-mac-intel" class="os-content">
-                <pre><code><span class="cm"># Download</span>
-curl -L https://github.com/sibasismukherjee/pgview/releases/download/v0.4.1/pgview-darwin-amd64 \
+                <pre><code>TAG=$(curl -sfL "https://api.github.com/repos/sibasismukherjee/pgview/releases/latest" | grep '"tag_name"' | cut -d'"' -f4)
+curl -sfL "https://github.com/sibasismukherjee/pgview/releases/download/${TAG}/pgview_${TAG}_darwin_amd64" \
   -o pgview
 
 chmod +x pgview
@@ -463,8 +452,8 @@ pgview -version</code></pre>
             </div>
 
             <div id="install-linux" class="os-content">
-                <pre><code><span class="cm"># Download</span>
-curl -L https://github.com/sibasismukherjee/pgview/releases/download/v0.4.1/pgview-linux-amd64 \
+                <pre><code>TAG=$(curl -sfL "https://api.github.com/repos/sibasismukherjee/pgview/releases/latest" | grep '"tag_name"' | cut -d'"' -f4)
+curl -sfL "https://github.com/sibasismukherjee/pgview/releases/download/${TAG}/pgview_${TAG}_linux_amd64" \
   -o pgview
 
 chmod +x pgview
