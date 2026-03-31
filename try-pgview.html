@@ -139,10 +139,8 @@
         <h4>Setup</h4>
         <ul>
             <li><a href="#overview">Overview</a></li>
-            <li><a href="#prerequisites">Prerequisites</a></li>
-            <li><a href="#postgres">Start PostgreSQL</a></li>
-            <li><a href="#seed">Seed the Database</a></li>
-            <li><a href="#install">Get pgview</a></li>
+            <li><a href="#quickstart">Quick Start</a></li>
+            <li><a href="#manual">Manual Setup</a></li>
         </ul>
         <h4>Explore</h4>
         <ul>
@@ -167,30 +165,94 @@
             <h1>Try pgview</h1>
             <div class="badges">
                 <span class="badge badge-teal">v0.6.0</span>
-                <span class="badge badge-orange">~15 min setup</span>
+                <span class="badge badge-orange">~2 min setup</span>
                 <span class="badge badge-gray">no cloud account needed</span>
             </div>
             <p>
                 This guide walks you through spinning up a local PostgreSQL instance with realistic
                 seed data and exploring every feature of <strong>pgview</strong> hands-on.
-                You will need a container runtime and the pgview binary — nothing else.
+                Everything runs locally — no cloud account, no installer, no runtime dependencies
+                beyond a container engine you likely already have.
             </p>
-            <p>
-                Total setup time is roughly <strong>10–15 minutes</strong>. All resources run locally;
-                nothing is sent to an external service.
-            </p>
-            <div class="callout">
-                Already have PostgreSQL running? Jump straight to <a href="#seed">Seed the Database</a>
-                to create the demo schema, then <a href="#install">Get pgview</a>.
+            <div class="callout info">
+                The demo kit lives in the pgview repo at
+                <a href="https://github.com/sibasismukherjee/pgview/tree/main/demo" target="_blank"><code>demo/</code></a>.
+                It contains a <code>docker-compose.yml</code>, a <code>seed.sql</code>, and a
+                <code>Makefile</code> that wire everything together.
             </div>
         </section>
 
-        <section id="prerequisites">
-            <h2>Prerequisites</h2>
+        <section id="quickstart">
+            <h2>Quick Start</h2>
+            <p>
+                Two commands. The only hard requirement is a container runtime
+                (Docker Desktop, Colima, or Podman) — <code>curl</code> and <code>bash</code>
+                are both pre-installed on macOS and most Linux distros. The script auto-detects your
+                OS and architecture, starts a seeded PostgreSQL container on port <code>5433</code>,
+                downloads the correct pgview binary, and launches it.
+            </p>
 
-            <h3>1 — Container runtime</h3>
-            <p>You need one of the following to run PostgreSQL locally. Install the one that fits your OS:</p>
+            <div class="os-tabs" id="qs-tabs">
+                <div class="os-tab active" data-group="qs" data-target="qs-unix">macOS / Linux</div>
+                <div class="os-tab" data-group="qs" data-target="qs-windows">Windows</div>
+            </div>
 
+            <div id="qs-unix" class="os-content active">
+                <pre><code><span class="cm"># Download the start script (curl or wget — one will be available)</span>
+curl -fsSL https://raw.githubusercontent.com/sibasismukherjee/pgview/main/demo/start.sh -o start.sh
+
+<span class="cm"># Run it — fetches docker-compose.yml, seed.sql, and the pgview binary automatically</span>
+bash start.sh</code></pre>
+                <p>When you are done:</p>
+                <pre><code>docker compose down &amp;&amp; rm pgview start.sh docker-compose.yml seed.sql</code></pre>
+            </div>
+
+            <div id="qs-windows" class="os-content">
+                <div class="callout warn">
+                    <strong>pgview has no native Windows binary.</strong>
+                    You need <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target="_blank">WSL2</a>
+                    with a Linux distribution installed (Ubuntu is recommended). Docker Desktop for
+                    Windows with WSL2 integration enabled works without any extra steps.
+                </div>
+                <p>Inside your WSL2 terminal, run the same two commands as macOS/Linux:</p>
+                <pre><code>curl -fsSL https://raw.githubusercontent.com/sibasismukherjee/pgview/main/demo/start.sh -o start.sh
+bash start.sh</code></pre>
+                <p>
+                    Docker Desktop's WSL2 integration means the <code>docker</code> command inside
+                    WSL2 talks directly to the Windows Docker daemon — no extra configuration needed.
+                </p>
+            </div>
+
+            <h3>What the script does</h3>
+            <table class="doc-table">
+                <thead><tr><th>Step</th><th>Action</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>Downloads <code>docker-compose.yml</code> and <code>seed.sql</code> if not already present</td></tr>
+                    <tr><td>2</td><td>Detects Docker, Podman, or Colima; starts Colima automatically if installed but not running</td></tr>
+                    <tr><td>3</td><td>Runs <code>docker compose up -d</code> — postgres starts and seed data loads on first boot</td></tr>
+                    <tr><td>4</td><td>Polls until postgres is healthy</td></tr>
+                    <tr><td>5</td><td>Downloads the correct pgview binary for your OS and CPU architecture</td></tr>
+                    <tr><td>6</td><td>Strips the macOS Gatekeeper quarantine bit automatically (no manual step needed)</td></tr>
+                    <tr><td>7</td><td>Launches pgview connected to the demo database</td></tr>
+                </tbody>
+            </table>
+
+            <div class="callout">
+                <strong>Prefer <code>make</code>?</strong> A <code>Makefile</code> is also included
+                in the <a href="https://github.com/sibasismukherjee/pgview/tree/main/demo" target="_blank">demo/</a>
+                directory. <code>make try</code> calls <code>start.sh</code>;
+                <code>make stop</code> and <code>make clean</code> tear down the container and binary.
+            </div>
+        </section>
+
+        <section id="manual">
+            <h2>Manual Setup</h2>
+            <p>
+                Prefer to control each step yourself, or already have a container running?
+                Expand the relevant tab below.
+            </p>
+
+            <h3>Container runtime</h3>
             <div class="os-tabs" id="runtime-tabs">
                 <div class="os-tab active" data-group="runtime" data-target="runtime-docker">Docker Desktop</div>
                 <div class="os-tab" data-group="runtime" data-target="runtime-colima">Colima (macOS)</div>
@@ -198,223 +260,47 @@
             </div>
 
             <div id="runtime-docker" class="os-content active">
-                <pre><code><span class="cm"># macOS — install via Homebrew</span>
-brew install --cask docker
+                <pre><code><span class="cm"># macOS</span>
+brew install --cask docker   <span class="cm"># then open Docker Desktop once</span>
 
-<span class="cm"># Linux — follow the official script</span>
+<span class="cm"># Linux</span>
 curl -fsSL https://get.docker.com | sh
-sudo usermod -aG docker $USER   <span class="cm"># log out and back in after this</span>
-
-<span class="cm"># Verify</span>
-docker --version</code></pre>
-                <p>Then open the Docker Desktop application once so the daemon starts.</p>
-                <p><strong>Windows users:</strong> Run all commands inside <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target="_blank">WSL2</a>. Docker Desktop for Windows with WSL2 integration enabled works with all instructions on this page.</p>
+sudo usermod -aG docker $USER   <span class="cm"># log out and back in</span></code></pre>
             </div>
 
             <div id="runtime-colima" class="os-content">
-                <pre><code><span class="cm"># Colima is a lightweight Docker runtime for macOS — no GUI required</span>
-brew install colima docker
-
-<span class="cm"># Start the VM (arm64 for Apple Silicon, x86_64 for Intel)</span>
-colima start
-
-<span class="cm"># Verify</span>
-docker --version</code></pre>
-                <p>Colima starts a lightweight Lima VM and exposes the Docker socket. It uses fewer resources than Docker Desktop and has no paid tier.</p>
+                <pre><code>brew install colima docker
+colima start   <span class="cm"># start a lightweight Lima VM; docker CLI works as normal</span></code></pre>
             </div>
 
             <div id="runtime-podman" class="os-content">
                 <pre><code><span class="cm"># macOS</span>
-brew install podman
-podman machine init
-podman machine start
+brew install podman &amp;&amp; podman machine init &amp;&amp; podman machine start
 
-<span class="cm"># Linux</span>
-sudo apt-get install -y podman   <span class="cm"># Debian/Ubuntu</span>
-sudo dnf install -y podman       <span class="cm"># Fedora/RHEL</span>
+<span class="cm"># Linux (Debian/Ubuntu)</span>
+sudo apt-get install -y podman
 
-<span class="cm"># Alias docker → podman if you prefer</span>
-alias docker=podman
-
-<span class="cm"># Verify</span>
-podman --version</code></pre>
-                <p>Podman is daemonless and runs containers rootless by default. All <code>docker</code> commands in this guide work identically with <code>podman</code>.</p>
+alias docker=podman   <span class="cm"># all docker commands work identically</span></code></pre>
             </div>
 
-            <h3>2 — Docker Hub account (free)</h3>
-            <p>
-                The PostgreSQL image is pulled from
-                <a href="https://hub.docker.com/_/postgres" target="_blank">Docker Hub</a>.
-                Anonymous pulls are rate-limited, so a free account is recommended.
-            </p>
-            <pre><code><span class="cm"># Log in once — credentials are cached on disk</span>
-docker login</code></pre>
-            <p>
-                Create a free account at <a href="https://hub.docker.com/" target="_blank">hub.docker.com</a>
-                if you do not have one yet.
-            </p>
+            <h3>Start PostgreSQL &amp; seed</h3>
+            <pre><code><span class="cm"># Using docker-compose (recommended)</span>
+docker compose up -d
+<span class="cm"># seed.sql is loaded automatically on first boot via /docker-entrypoint-initdb.d/</span>
 
-            <h3>3 — pgview binary</h3>
-            <p>Covered in the <a href="#install">Get pgview</a> section below — no installation needed, it is a single static binary.</p>
-        </section>
+<span class="cm"># Or run a bare container and seed manually</span>
+docker run -d --name pgview-demo \
+  -e POSTGRES_PASSWORD=demo -e POSTGRES_DB=demodb \
+  -p 5433:5432 postgres:16-alpine
 
-        <section id="postgres">
-            <h2>Start PostgreSQL</h2>
-            <p>Run a PostgreSQL 16 container with a known user, password, and database name.</p>
+<span class="cm"># Wait until ready</span>
+until docker exec pgview-demo pg_isready -U postgres -d demodb -q; do sleep 1; done
 
-            <pre><code>docker run -d \
-  --name pgview-demo \
-  -e POSTGRES_USER=<span class="st">demo</span> \
-  -e POSTGRES_PASSWORD=<span class="st">demo1234</span> \
-  -e POSTGRES_DB=<span class="st">demodb</span> \
-  -p 5432:5432 \
-  postgres:16-alpine</code></pre>
+<span class="cm"># Apply seed</span>
+curl -fsSL https://raw.githubusercontent.com/sibasismukherjee/pgview/main/demo/seed.sql \
+  | docker exec -i pgview-demo psql -U postgres -d demodb</code></pre>
 
-            <div class="callout">
-                <strong>Apple Silicon (M1/M2/M3)?</strong> The <code>postgres:16-alpine</code> image
-                ships multi-arch manifests — the right image is pulled automatically. No flags needed.
-            </div>
-
-            <p>Wait a few seconds for the container to become healthy, then verify:</p>
-            <pre><code>docker exec pgview-demo pg_isready -U demo -d demodb
-<span class="cm"># Expected: localhost:5432 - accepting connections</span></code></pre>
-
-            <div class="callout warn">
-                <strong>Port already in use?</strong> If port 5432 is taken by a local Postgres installation,
-                map to a different host port: <code>-p 5433:5432</code>. Then pass
-                <code>pgview -url localhost:5433</code> later.
-            </div>
-
-            <p>When you are done testing, stop and remove the container:</p>
-            <pre><code>docker stop pgview-demo &amp;&amp; docker rm pgview-demo</code></pre>
-        </section>
-
-        <section id="seed">
-            <h2>Seed the Database</h2>
-            <p>
-                Connect to the container and create a realistic demo schema with four related tables
-                and several hundred rows.
-            </p>
-
-            <pre><code>docker exec -i pgview-demo psql -U demo -d demodb &lt;&lt;'SQL'
-
-<span class="cm">-- ─────────────────────────────────────────────────────────────
--- Schema: demo
--- ─────────────────────────────────────────────────────────────</span>
-
-<span class="kw">CREATE SCHEMA IF NOT EXISTS</span> demo;
-
-<span class="cm">-- customers</span>
-<span class="kw">CREATE TABLE</span> demo.customers (
-  id          bigserial    <span class="kw">PRIMARY KEY</span>,
-  name        text         <span class="kw">NOT NULL</span>,
-  email       text         <span class="kw">NOT NULL UNIQUE</span>,
-  status      text         <span class="kw">NOT NULL DEFAULT</span> <span class="st">'active'</span>,
-  created_at  timestamptz  <span class="kw">NOT NULL DEFAULT</span> now(),
-  tags        text[]
-);
-<span class="kw">COMMENT ON COLUMN</span> demo.customers.tags <span class="kw">IS</span> <span class="st">'freeform labels for segmentation'</span>;
-<span class="kw">CREATE INDEX</span> idx_customers_status <span class="kw">ON</span> demo.customers (status);
-<span class="kw">ALTER TABLE</span> demo.customers
-  <span class="kw">ADD CONSTRAINT</span> customers_status_chk
-  <span class="kw">CHECK</span> (status <span class="kw">IN</span> (<span class="st">'active'</span>, <span class="st">'inactive'</span>, <span class="st">'suspended'</span>));
-
-<span class="cm">-- products</span>
-<span class="kw">CREATE TABLE</span> demo.products (
-  id          serial       <span class="kw">PRIMARY KEY</span>,
-  name        text         <span class="kw">NOT NULL</span>,
-  category    text         <span class="kw">NOT NULL</span>,
-  price       numeric(10,2)<span class="kw">NOT NULL</span>,
-  stock_qty   int          <span class="kw">NOT NULL DEFAULT</span> <span class="num">0</span>
-);
-<span class="kw">CREATE INDEX</span> idx_products_category <span class="kw">ON</span> demo.products (category);
-
-<span class="cm">-- orders</span>
-<span class="kw">CREATE TABLE</span> demo.orders (
-  id           bigserial    <span class="kw">PRIMARY KEY</span>,
-  customer_id  bigint       <span class="kw">NOT NULL REFERENCES</span> demo.customers(id),
-  total        numeric(10,2)<span class="kw">NOT NULL</span>,
-  status       text         <span class="kw">NOT NULL DEFAULT</span> <span class="st">'pending'</span>,
-  created_at   timestamptz  <span class="kw">NOT NULL DEFAULT</span> now(),
-  notes        jsonb
-);
-<span class="kw">CREATE INDEX</span> idx_orders_customer <span class="kw">ON</span> demo.orders (customer_id);
-<span class="kw">CREATE INDEX</span> idx_orders_status  <span class="kw">ON</span> demo.orders (status);
-<span class="kw">ALTER TABLE</span> demo.orders
-  <span class="kw">ADD CONSTRAINT</span> orders_status_chk
-  <span class="kw">CHECK</span> (status <span class="kw">IN</span> (<span class="st">'pending'</span>, <span class="st">'paid'</span>, <span class="st">'shipped'</span>, <span class="st">'cancelled'</span>));
-
-<span class="cm">-- order_items</span>
-<span class="kw">CREATE TABLE</span> demo.order_items (
-  id          bigserial    <span class="kw">PRIMARY KEY</span>,
-  order_id    bigint       <span class="kw">NOT NULL REFERENCES</span> demo.orders(id),
-  product_id  int          <span class="kw">NOT NULL REFERENCES</span> demo.products(id),
-  quantity    int          <span class="kw">NOT NULL DEFAULT</span> <span class="num">1</span>,
-  unit_price  numeric(10,2)<span class="kw">NOT NULL</span>
-);
-
-<span class="cm">-- ─────────────────────────────────────────────────────────────
--- Seed data
--- ─────────────────────────────────────────────────────────────</span>
-
-<span class="kw">INSERT INTO</span> demo.customers (name, email, status, tags) <span class="kw">VALUES</span>
-  (<span class="st">'Alice Nguyen'</span>,   <span class="st">'alice@example.com'</span>,   <span class="st">'active'</span>,    <span class="st">'{vip,newsletter}'</span>),
-  (<span class="st">'Bob Okonkwo'</span>,    <span class="st">'bob@example.com'</span>,     <span class="st">'active'</span>,    <span class="st">'{newsletter}'</span>),
-  (<span class="st">'Carol Singh'</span>,    <span class="st">'carol@example.com'</span>,   <span class="st">'active'</span>,    <span class="st">'{vip}'</span>),
-  (<span class="st">'David Rossi'</span>,    <span class="st">'david@example.com'</span>,   <span class="st">'inactive'</span>,  <span class="st">NULL</span>),
-  (<span class="st">'Eve Martínez'</span>,   <span class="st">'eve@example.com'</span>,     <span class="st">'active'</span>,    <span class="st">'{vip,newsletter}'</span>),
-  (<span class="st">'Frank Dubois'</span>,   <span class="st">'frank@example.com'</span>,   <span class="st">'suspended'</span>, <span class="st">NULL</span>),
-  (<span class="st">'Grace Kim'</span>,      <span class="st">'grace@example.com'</span>,   <span class="st">'active'</span>,    <span class="st">'{newsletter}'</span>),
-  (<span class="st">'Hiro Tanaka'</span>,    <span class="st">'hiro@example.com'</span>,    <span class="st">'active'</span>,    <span class="st">'{vip}'</span>),
-  (<span class="st">'Ingrid Svensson'</span>,<span class="st">'ingrid@example.com'</span>,  <span class="st">'active'</span>,    <span class="st">'{newsletter}'</span>),
-  (<span class="st">'James O''Brien'</span>, <span class="st">'james@example.com'</span>,   <span class="st">'inactive'</span>,  <span class="st">NULL</span>);
-
-<span class="kw">INSERT INTO</span> demo.products (name, category, price, stock_qty) <span class="kw">VALUES</span>
-  (<span class="st">'Wireless Keyboard'</span>,    <span class="st">'Electronics'</span>, <span class="num">79.99</span>,  <span class="num">50</span>),
-  (<span class="st">'USB-C Hub'</span>,            <span class="st">'Electronics'</span>, <span class="num">49.99</span>,  <span class="num">120</span>),
-  (<span class="st">'Mechanical Keyboard'</span>,  <span class="st">'Electronics'</span>, <span class="num">149.00</span>, <span class="num">30</span>),
-  (<span class="st">'Desk Lamp'</span>,            <span class="st">'Office'</span>,      <span class="num">35.50</span>,  <span class="num">200</span>),
-  (<span class="st">'Notebook A5'</span>,          <span class="st">'Stationery'</span>,  <span class="num">8.99</span>,   <span class="num">500</span>),
-  (<span class="st">'Ergonomic Mouse'</span>,      <span class="st">'Electronics'</span>, <span class="num">59.00</span>,  <span class="num">75</span>),
-  (<span class="st">'Monitor Stand'</span>,        <span class="st">'Office'</span>,      <span class="num">89.00</span>,  <span class="num">40</span>),
-  (<span class="st">'Cable Organiser'</span>,      <span class="st">'Office'</span>,      <span class="num">14.99</span>,  <span class="num">300</span>);
-
-<span class="kw">INSERT INTO</span> demo.orders (customer_id, total, status, notes) <span class="kw">VALUES</span>
-  (<span class="num">1</span>, <span class="num">129.98</span>, <span class="st">'paid'</span>,      <span class="st">'{"source":"web","promo":"SUMMER10"}'</span>),
-  (<span class="num">2</span>, <span class="num">49.99</span>,  <span class="st">'shipped'</span>,   <span class="kw">NULL</span>),
-  (<span class="num">3</span>, <span class="num">238.00</span>, <span class="st">'paid'</span>,      <span class="st">'{"source":"app"}'</span>),
-  (<span class="num">1</span>, <span class="num">35.50</span>,  <span class="st">'pending'</span>,   <span class="kw">NULL</span>),
-  (<span class="num">5</span>, <span class="num">59.00</span>,  <span class="st">'paid'</span>,      <span class="st">'{"source":"web"}'</span>),
-  (<span class="num">7</span>, <span class="num">8.99</span>,   <span class="st">'cancelled'</span>, <span class="kw">NULL</span>),
-  (<span class="num">8</span>, <span class="num">168.99</span>, <span class="st">'shipped'</span>,   <span class="st">'{"source":"app","gift":true}'</span>),
-  (<span class="num">9</span>, <span class="num">14.99</span>,  <span class="st">'paid'</span>,      <span class="kw">NULL</span>);
-
-<span class="kw">INSERT INTO</span> demo.order_items (order_id, product_id, quantity, unit_price) <span class="kw">VALUES</span>
-  (<span class="num">1</span>, <span class="num">1</span>, <span class="num">1</span>, <span class="num">79.99</span>), (<span class="num">1</span>, <span class="num">2</span>, <span class="num">1</span>, <span class="num">49.99</span>),
-  (<span class="num">2</span>, <span class="num">2</span>, <span class="num">1</span>, <span class="num">49.99</span>),
-  (<span class="num">3</span>, <span class="num">3</span>, <span class="num">1</span>, <span class="num">149.00</span>), (<span class="num">3</span>, <span class="num">7</span>, <span class="num">1</span>, <span class="num">89.00</span>),
-  (<span class="num">4</span>, <span class="num">4</span>, <span class="num">1</span>, <span class="num">35.50</span>),
-  (<span class="num">5</span>, <span class="num">6</span>, <span class="num">1</span>, <span class="num">59.00</span>),
-  (<span class="num">6</span>, <span class="num">5</span>, <span class="num">1</span>, <span class="num">8.99</span>),
-  (<span class="num">7</span>, <span class="num">3</span>, <span class="num">1</span>, <span class="num">149.00</span>), (<span class="num">7</span>, <span class="num">6</span>, <span class="num">1</span>, <span class="num">19.99</span>),
-  (<span class="num">8</span>, <span class="num">8</span>, <span class="num">1</span>, <span class="num">14.99</span>);
-
-<span class="kw">ANALYZE</span>;
-SQL</code></pre>
-
-            <p>Verify the seed data was inserted:</p>
-            <pre><code>docker exec pgview-demo psql -U demo -d demodb \
-  -c "SELECT schemaname, tablename, n_live_tup FROM pg_stat_user_tables WHERE schemaname = 'demo' ORDER BY tablename;"</code></pre>
-            <p>You should see four rows with non-zero <code>n_live_tup</code> values.</p>
-        </section>
-
-        <section id="install">
-            <h2>Get pgview</h2>
-            <p>
-                pgview is a single static binary — no runtime dependencies, no installer.
-                The commands below always download the <a href="https://github.com/sibasismukherjee/pgview/releases/latest" target="_blank">latest release</a>.
-            </p>
-
+            <h3>Download pgview</h3>
             <div class="os-tabs" id="install-tabs">
                 <div class="os-tab active" data-group="install" data-target="install-mac-arm">macOS arm64</div>
                 <div class="os-tab" data-group="install" data-target="install-mac-intel">macOS Intel</div>
@@ -422,73 +308,44 @@ SQL</code></pre>
             </div>
 
             <div id="install-mac-arm" class="os-content active">
-                <pre><code><span class="cm"># Fetch latest tag and download matching binary</span>
-TAG=$(curl -sfL "https://api.github.com/repos/sibasismukherjee/pgview/releases/latest" | grep '"tag_name"' | cut -d'"' -f4)
-curl -sfL "https://github.com/sibasismukherjee/pgview/releases/download/${TAG}/pgview_${TAG}_darwin_arm64" \
-  -o pgview
-
-chmod +x pgview
-mv pgview /usr/local/bin/pgview
-pgview -version</code></pre>
-                <div class="callout warn">
-                    <strong>macOS Gatekeeper warning?</strong> Because the binary is not signed with an Apple
-                    Developer certificate, macOS may block it on first launch.
-                    Run: <code>xattr -d com.apple.quarantine pgview</code>
-                    then try again. Alternatively: System Settings → Privacy &amp; Security → click "Allow Anyway".
-                </div>
+                <pre><code>TAG=$(curl -sfL "https://api.github.com/repos/sibasismukherjee/pgview/releases/latest" | grep '"tag_name"' | cut -d'"' -f4)
+curl -sfL "https://github.com/sibasismukherjee/pgview/releases/download/${TAG}/pgview_${TAG}_darwin_arm64" -o pgview
+chmod +x pgview &amp;&amp; sudo mv pgview /usr/local/bin/</code></pre>
             </div>
-
             <div id="install-mac-intel" class="os-content">
                 <pre><code>TAG=$(curl -sfL "https://api.github.com/repos/sibasismukherjee/pgview/releases/latest" | grep '"tag_name"' | cut -d'"' -f4)
-curl -sfL "https://github.com/sibasismukherjee/pgview/releases/download/${TAG}/pgview_${TAG}_darwin_amd64" \
-  -o pgview
-
-chmod +x pgview
-mv pgview /usr/local/bin/pgview
-pgview -version</code></pre>
-                <div class="callout warn">
-                    Same Gatekeeper note as arm64 above: <code>xattr -d com.apple.quarantine pgview</code> if blocked.
-                </div>
+curl -sfL "https://github.com/sibasismukherjee/pgview/releases/download/${TAG}/pgview_${TAG}_darwin_amd64" -o pgview
+chmod +x pgview &amp;&amp; sudo mv pgview /usr/local/bin/</code></pre>
             </div>
-
             <div id="install-linux" class="os-content">
                 <pre><code>TAG=$(curl -sfL "https://api.github.com/repos/sibasismukherjee/pgview/releases/latest" | grep '"tag_name"' | cut -d'"' -f4)
-curl -sfL "https://github.com/sibasismukherjee/pgview/releases/download/${TAG}/pgview_${TAG}_linux_amd64" \
-  -o pgview
-
-chmod +x pgview
-sudo mv pgview /usr/local/bin/pgview
-pgview -version</code></pre>
+curl -sfL "https://github.com/sibasismukherjee/pgview/releases/download/${TAG}/pgview_${TAG}_linux_amd64" -o pgview
+chmod +x pgview &amp;&amp; sudo mv pgview /usr/local/bin/</code></pre>
             </div>
-
-            <p>Or build from source if you have Go 1.22+:</p>
-            <pre><code>git clone https://github.com/sibasismukherjee/pgview.git
-cd pgview
-make build    <span class="cm"># produces ./pgview</span></code></pre>
         </section>
 
         <section id="connect">
             <h2>Connect to PostgreSQL</h2>
             <p>Run pgview and point it at the container you started earlier:</p>
 
-            <pre><code><span class="cm"># One-liner with all flags</span>
-pgview -url localhost:5432 -username demo -password demo1234 -dbname demodb -sslmode disable</code></pre>
+            <pre><code><span class="cm"># One-liner (if you used make try, this is already running)</span>
+pgview -url localhost:5433 -username postgres -password demo -dbname demodb -sslmode disable</code></pre>
 
             <p>Or run interactively and enter each value at the prompt:</p>
             <pre><code>pgview
-<span class="cm"># Connection URL (host:port): </span>localhost:5432
-<span class="cm"># Username: </span>demo
+<span class="cm"># Connection URL (host:port): </span>localhost:5433
+<span class="cm"># Username: </span>postgres
 <span class="cm"># Database [postgres]: </span>demodb
-<span class="cm"># Password: </span>demo1234  ← not echoed</code></pre>
+<span class="cm"># Password: </span>demo  ← not echoed</code></pre>
 
             <p>
-                pgview opens directly on the <strong>Table List</strong>. You should see the four
-                tables in the <code>demo</code> schema: <code>customers</code>, <code>order_items</code>,
-                <code>orders</code>, and <code>products</code>.
+                pgview opens directly on the <strong>Table List</strong>. You'll see tables across
+                two schemas: <code>demo.*</code> (customers, orders, products, order_items — used in
+                this walkthrough) and <code>public.*</code> (routes, orders — used in the demo GIF).
             </p>
 
             <div class="callout info">
-                The top-left corner always shows <code>demo@demodb · localhost</code> — a quick reminder
+                The top-left corner always shows <code>postgres@demodb · localhost</code> — a quick reminder
                 of which database you are connected to.
             </div>
         </section>
@@ -780,8 +637,11 @@ ORDER BY total_spent DESC NULLS LAST;</code></pre>
             </p>
 
             <h3>Clean up</h3>
-            <p>When you are done, remove the demo container:</p>
-            <pre><code>docker stop pgview-demo &amp;&amp; docker rm pgview-demo</code></pre>
+            <p>When you are done, tear down the demo container and remove the binary:</p>
+            <pre><code>make stop &amp;&amp; make clean
+
+<span class="cm"># Or manually</span>
+docker compose down</code></pre>
         </section>
 
     </main>
