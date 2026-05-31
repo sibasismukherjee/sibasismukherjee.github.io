@@ -216,6 +216,8 @@
 				</li>
 				<li>Managed and executed <strong>EKS version upgrades across the entire 100+ cluster fleet</strong> from EKS 1.21 through 1.32 — coordinating control plane and node group upgrades at scale while maintaining workload availability throughout each upgrade cycle.</li>
 				<li>Developed an internal upgrade automation tool that reduced the end-to-end lead time for a cluster and node upgrade from <strong>2 weeks</strong> (constrained to scheduled maintenance windows) down to <strong>2 hours</strong> — a 10× throughput improvement that decoupled upgrade velocity from maintenance calendar constraints and eliminated the operational backlog across the fleet.</li>
+				<li>Design and own the <strong>observability strategy across the cluster fleet</strong> — aggregating metrics, logs, and traces from 100+ clusters into coherent platform-wide views using Prometheus, Grafana, Datadog, and the ELK stack. Define and track platform-level SLIs and SLOs, implement burn-rate alerting to catch reliability degradation early, and maintain dashboards that serve both on-call engineers and engineering leadership.</li>
+				<li>Drive signal quality over noise — refine alert thresholds and routing across the fleet so that pages are actionable, reduce mean time to detect (MTTD), and build runbooks backed by observability data that make incident response faster and less dependent on tribal knowledge.</li>
 				<li>Architect and implement cluster lifecycle automation, capacity planning, and reliability engineering frameworks at a scale most organizations never encounter.</li>
 				<li>Partner with product and platform teams across the Foundations Domain to define infrastructure strategy, set reliability standards, and eliminate systemic toil through automation.</li>
 				<li>Drive GitOps adoption and standardization across the cluster fleet using Terraform and AWS-native tooling.</li>
@@ -232,6 +234,7 @@
 				<li>Architected and delivered a highly available, multi-region API platform on AWS for VW Financial Services, serving as the cloud development foundation for a major European automotive finance enterprise.</li>
 				<li>Took ownership of DevOps processes, infrastructure-as-code, and SDLC tooling — accelerating delivery velocity and reducing deployment risk across the platform.</li>
 				<li>Conducted <strong>AWS cost optimization</strong> across the platform — identifying over-provisioned compute and database instances, implementing Reserved Instance and Savings Plans coverage, and establishing tagging hygiene for per-service cost attribution across the API estate.</li>
+				<li>Designed monitoring and alerting for the API platform — establishing per-service latency, error rate, and throughput baselines on Datadog and Dynatrace, enabling the team to detect regressions before they reached end users.</li>
 				<li>Developed reusable libraries and internal tooling that shortened onboarding time for platform contributors.</li>
 			</ul>
 
@@ -290,7 +293,7 @@
 				</div>
 				<div>
 					<span class="skill-group-label">Observability &amp; Monitoring</span>
-					<span class="skill-group-value">Datadog · Prometheus · Grafana · ELK Stack · SysDig · Dynatrace · AWS CloudWatch · Distributed Tracing</span>
+					<span class="skill-group-value">Fleet-scale metrics aggregation (Prometheus + remote write) · SLO/SLI definition &amp; burn-rate alerting · Structured log pipelines (ELK / OpenSearch) · Distributed tracing (OpenTelemetry, Jaeger) · Platform-wide dashboarding (Grafana, Datadog) · Alert quality &amp; noise reduction · MTTD/MTTR optimization · Dynatrace · SysDig · AWS CloudWatch</span>
 				</div>
 				<div>
 					<span class="skill-group-label">Networking &amp; Security</span>
