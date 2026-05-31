@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sibasis Mukherjee — Resume</title>
+<style>
+  /* ── Design tokens from Sketch ─────────────────────────────────────── */
+  :root {
+    --green:   #54b689;
+    --body:    #4f4f4f;
+    --muted:   #757575;
+    --rule:    #e0e0e0;
+    --page-w:  794px;   /* A4 @ 96 dpi */
+    --pad:     28px;
+    --sidebar: 152px;
+    --gap:     22px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 8.5pt;
+    color: var(--body);
+    background: #ccc;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Page shell ────────────────────────────────────────────────────── */
+  .page {
+    width: var(--page-w);
+    height: 1123px;            /* A4 @ 96 dpi — hard lock */
+    background: #fff;
+    margin: 24px auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── Header ─────────────────────────────────────────────────────────── */
+  .header {
+    padding: 14px var(--pad) 10px;
+    border-bottom: 1.5px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+  .header-name {
+    font-size: 18pt;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  .header-title {
+    font-size: 13pt;
+    font-weight: 300;
+    color: var(--body);
+    margin-top: 4px;
+  }
+  .header-contact {
+    text-align: right;
+    font-size: 7.5pt;
+    color: var(--body);
+    line-height: 1.9;
+    margin-top: 2px;
+  }
+  .header-contact a { color: var(--green); }
+
+  /* ── Summary ─────────────────────────────────────────────────────────── */
+  .summary {
+    padding: 10px var(--pad) 9px;
+    border-bottom: 1.5px solid var(--rule);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    flex-shrink: 0;
+  }
+  .summary img {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .summary-text {
+    font-size: 7.5pt;
+    color: var(--body);
+    line-height: 1.52;
+    padding-top: 2px;
+  }
+
+  /* ── Body (two-column) ───────────────────────────────────────────────── */
+  .body {
+    display: flex;
+    align-items: flex-start;
+    padding: 0 var(--pad);
+    gap: var(--gap);
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ─────────────────────────────────────────────────────────── */
+  .sidebar {
+    width: var(--sidebar);
+    flex-shrink: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-right: 1.5px solid var(--rule);
+    padding-right: 13px;
+    overflow: hidden;
+  }
+
+  /* ── Main content ────────────────────────────────────────────────────── */
+  .main {
+    flex: 1;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    overflow: hidden;
+  }
+
+  /* ── Section heading (green bar + bold label) ────────────────────────── */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
+    margin-top: 11px;
+  }
+  .section-heading:first-child { margin-top: 0; }
+  .section-heading .bar {
+    width: 3px;
+    height: 14px;
+    background: var(--green);
+    flex-shrink: 0;
+    border-radius: 1px;
+  }
+  .section-heading span {
+    font-size: 10pt;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── Sidebar items ───────────────────────────────────────────────────── */
+  .skill-group-label {
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: var(--body);
+    margin-top: 7px;
+    margin-bottom: 2px;
+    display: block;
+  }
+  .skill-group-label:first-child { margin-top: 0; }
+  .skill-list {
+    font-size: 7.2pt;
+    color: var(--body);
+    line-height: 1.6;
+  }
+
+  .sidebar-item {
+    font-size: 7.5pt;
+    color: var(--body);
+    line-height: 1.75;
+  }
+
+  /* ── Work experience items ───────────────────────────────────────────── */
+  .job { margin-bottom: 9px; }
+  .job:last-child { margin-bottom: 0; }
+
+  .job-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 1px;
+  }
+  .job-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: var(--body);
+  }
+  .job-meta {
+    font-size: 7pt;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .job-company {
+    font-size: 7.5pt;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  .job-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .job-bullets li {
+    font-size: 7.5pt;
+    color: var(--body);
+    line-height: 1.48;
+    padding-left: 10px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .job-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-size: 7pt;
+    top: 0.1em;
+  }
+
+  /* ── Divider ────────────────────────────────────────────────────────── */
+  .rule { border: none; border-top: 1px solid var(--rule); margin: 7px 0; }
+
+  /* ── Certifications ─────────────────────────────────────────────────── */
+  .badges {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .badges a img {
+    height: 56px;
+    width: auto;
+    display: block;
+    transition: opacity 0.15s;
+  }
+  .badges a:hover img { opacity: 0.8; }
+
+  /* ── Footer ─────────────────────────────────────────────────────────── */
+  .footer {
+    border-top: 1.5px solid var(--rule);
+    padding: 7px var(--pad);
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    flex-shrink: 0;
+    margin-top: auto;
+  }
+  .footer-link {
+    font-size: 7.5pt;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .footer-link svg { flex-shrink: 0; }
+
+  /* ── Print ───────────────────────────────────────────────────────────── */
+  @media print {
+    body { background: none; }
+    .page { margin: 0; box-shadow: none; }
+    @page { size: A4; margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Header ──────────────────────────────────────────────────────── -->
+  <header class="header">
+    <div>
+      <div class="header-name">SIBASIS MUKHERJEE</div>
+      <div class="header-title">Staff Site Reliability Engineer</div>
+    </div>
+    <div class="header-contact">
+      <a href="tel:+4915736584093">+49-15736584093</a><br>
+      <a href="mailto:mukherjee.sibasis@yahoo.com">mukherjee.sibasis@yahoo.com</a><br>
+      <a href="https://sibasismukherjee.github.io">sibasismukherjee.github.io</a><br>
+      Berlin, Germany
+    </div>
+  </header>
+
+  <!-- ── Summary ─────────────────────────────────────────────────────── -->
+  <section class="summary">
+    <img src="img/resume-profile-sketch.png" alt="Sibasis Mukherjee">
+    <p class="summary-text">
+      Staff Site Reliability Engineer with 12+ years in production infrastructure across distributed systems at global scale. At Delivery Hero's Tech Foundations Domain,
+      I own the reliability, scalability, and operational posture of a Kubernetes platform processing <strong>5M+ API requests per hour</strong> across
+      <strong>100+ production clusters</strong>. I define SLOs and error budgets with engineering teams, lead production readiness reviews,
+      and drive incident management from detection through post-mortem — having contained some of the highest revenue-impact failures in the company's
+      history, including AWS region outages and cluster-wide IP exhaustion. I mentor and train junior engineers, re-architect systems for
+      fault-tolerance and efficiency, and build automation that eliminates toil at scale.
+    </p>
+  </section>
+
+  <!-- ── Body ────────────────────────────────────────────────────────── -->
+  <div class="body">
+
+    <!-- ── Sidebar ───────────────────────────────────────────────────── -->
+    <aside class="sidebar">
+
+      <div class="section-heading">
+        <div class="bar"></div><span>Skills</span>
+      </div>
+
+      <span class="skill-group-label">Kubernetes &amp; Platform</span>
+      <div class="skill-list">EKS · kOps · Fleet Mgmt (100+ clusters) · Cluster Lifecycle Automation · Helm · Custom Controllers</div>
+
+      <span class="skill-group-label">Observability</span>
+      <div class="skill-list">Prometheus (remote write, high-cardinality) · Loki · Grafana · Datadog · ELK / OpenSearch · OpenTelemetry · SysDig · AWS CloudWatch</div>
+
+      <span class="skill-group-label">Cloud &amp; IaC</span>
+      <div class="skill-list">AWS (EKS, EC2, VPC, RDS, S3, IAM, Route53) · Terraform · CloudFormation · GitOps · ArgoCD</div>
+
+      <span class="skill-group-label">SRE Practice</span>
+      <div class="skill-list">SLO/SLI · Error Budgets · Incident Command · Post-mortems · Capacity Planning · Prod Readiness Reviews · Runbook Automation</div>
+
+      <span class="skill-group-label">CI/CD &amp; Dev Tools</span>
+      <div class="skill-list">GitHub Actions · Jenkins · Drone CI · Spinnaker · Concourse · AWS CodePipeline</div>
+
+      <span class="skill-group-label">Languages</span>
+      <div class="skill-list">Go · Python · Bash · JavaScript</div>
+
+      <span class="skill-group-label">Databases</span>
+      <div class="skill-list">Aurora (PG/MySQL) · DynamoDB · ElastiCache · Kafka · SNS/SQS</div>
+
+      <hr class="rule">
+
+      <div class="section-heading" style="margin-top:0">
+        <div class="bar"></div><span>Education</span>
+      </div>
+      <div class="sidebar-item">
+        <strong>BTech, Information Technology</strong><br>
+        West Bengal University of Technology<br>
+        <span style="color:var(--muted)">2009 – 2013</span>
+      </div>
+
+      <hr class="rule">
+
+      <div class="section-heading" style="margin-top:0">
+        <div class="bar"></div><span>Languages</span>
+      </div>
+      <div class="sidebar-item">English <span style="color:var(--muted)">(Native)</span></div>
+
+      <hr class="rule">
+
+      <div class="section-heading" style="margin-top:0">
+        <div class="bar"></div><span>Interests</span>
+      </div>
+      <div class="sidebar-item">
+        Photography<br>
+        Climbing &amp; Hiking<br>
+        Travelling
+      </div>
+
+    </aside>
+
+    <!-- ── Main ──────────────────────────────────────────────────────── -->
+    <main class="main">
+
+      <div class="section-heading" style="margin-top:0">
+        <div class="bar"></div><span>Work Experience</span>
+      </div>
+
+      <!-- DH -->
+      <div class="job">
+        <div class="job-header">
+          <span class="job-title">Staff Systems Engineer II</span>
+          <span class="job-meta">Dec 2021 — Present</span>
+        </div>
+        <div class="job-company">
+          <a href="https://www.deliveryhero.com/">Delivery Hero SE</a>, Berlin &nbsp;·&nbsp; Tech Foundations Domain
+        </div>
+        <ul class="job-bullets">
+          <li>Own and operate <strong>100+ production EKS clusters</strong> averaging 200+ nodes each, running thousands of workloads and sustaining <strong>5M+ API requests/hour</strong> — infrastructure backbone for one of Europe's largest on-demand logistics platforms.</li>
+          <li>Lead <strong>high-stakes incident response</strong> for the company's highest revenue-impact events — AWS region outages and cluster-wide IPv4 exhaustion — protecting millions in revenue through rapid containment and systematic remediation.</li>
+          <li>Managed <strong>EKS version upgrades across the entire fleet</strong> from 1.21 → 1.32; developed an internal automation tool that reduced per-cluster upgrade lead time from <strong>2 weeks to 2 hours</strong>, decoupling upgrades from maintenance window constraints.</li>
+          <li>Sustained <strong>metrics and log ingestion at platform scale</strong> on Prometheus and Loki — tuning remote write pipelines, resolving high-cardinality bottlenecks, and managing label explosion across thousands of workloads.</li>
+          <li>Lead <strong>production readiness reviews</strong> and define SLOs/error budgets with engineering teams; implement burn-rate alerting and fleet-wide dashboards that serve both on-call engineers and engineering leadership.</li>
+          <li>Drive <strong>fleet-wide cost optimization</strong> through cluster utilization analysis, node right-sizing, and fault-tolerant topology design that maximizes resource efficiency without sacrificing availability.</li>
+          <li>Re-architect and redesign critical platform systems delivering multi-fold reliability improvements; <strong>train and onboard every junior engineer</strong> joining the team — structured knowledge transfer on infrastructure topology, failure patterns, and operational caveats.</li>
+        </ul>
+      </div>
+
+      <hr class="rule">
+
+      <!-- Cloudreach -->
+      <div class="job">
+        <div class="job-header">
+          <span class="job-title">Cloud Systems Developer</span>
+          <span class="job-meta">Oct 2019 — Nov 2021</span>
+        </div>
+        <div class="job-company">
+          <a href="https://cloudreach.com/">Cloudreach GmbH</a>, Berlin &nbsp;·&nbsp; Consulting for <a href="https://www.vwfs.com/">VW Financial Services</a>
+        </div>
+        <ul class="job-bullets">
+          <li>Architected and delivered a highly available, multi-region API platform on AWS for VW Financial Services — the cloud development foundation for a major European automotive finance enterprise.</li>
+          <li>Conducted AWS cost optimization: right-sized compute and database instances, implemented Reserved Instance and Savings Plans coverage, established tagging hygiene for per-service cost attribution.</li>
+          <li>Designed per-service monitoring on Datadog and Dynatrace — latency, error rate, and throughput baselines enabling regression detection before customer impact.</li>
+        </ul>
+      </div>
+
+      <hr class="rule">
+
+      <!-- TCS DNB -->
+      <div class="job">
+        <div class="job-header">
+          <span class="job-title">Cloud Consultant</span>
+          <span class="job-meta">Jul 2017 — Aug 2019</span>
+        </div>
+        <div class="job-company">
+          <a href="https://www.tcs.com/">Tata Consultancy Services</a>, Bergen &nbsp;·&nbsp; Consulting for <a href="https://www.dnb.no/">DNB (Nordic Bank)</a>
+        </div>
+        <ul class="job-bullets">
+          <li>Greenfield build of a customer-centric banking application on AWS for one of the largest Nordic banks — infrastructure provisioning through production go-live.</li>
+          <li>Led CI/CD initiatives, Well-Architected Review execution, and a cross-project cost optimization program post-launch.</li>
+        </ul>
+      </div>
+
+      <hr class="rule">
+
+      <!-- TCS DB -->
+      <div class="job">
+        <div class="job-header">
+          <span class="job-title">DevOps Engineer</span>
+          <span class="job-meta">Mar 2014 — Jun 2017</span>
+        </div>
+        <div class="job-company">
+          <a href="https://www.tcs.com/">Tata Consultancy Services</a>, Frankfurt &nbsp;·&nbsp; Consulting for <a href="https://deutsche-boerse.com/">Deutsche Börse AG</a>
+        </div>
+        <ul class="job-bullets">
+          <li>Set up automation, test suites, and CI/CD pipelines for a new product initiative at Deutsche Börse — a high-compliance financial exchange environment.</li>
+          <li>Owned operational support and patch management for production workloads throughout the engagement.</li>
+        </ul>
+      </div>
+
+      <hr class="rule">
+
+      <!-- Certifications -->
+      <div class="section-heading" style="margin-top:2px">
+        <div class="bar"></div><span>Professional Certificates</span>
+      </div>
+      <div class="badges">
+        <a href="https://www.credly.com/badges/18c9b287-28b9-4c24-b17d-b852e9d7f53f" target="_blank">
+          <img src="img/badge-1.png" alt="AWS Certification">
+        </a>
+        <a href="https://www.credly.com/badges/9dc7a31b-ce1b-452a-9ec6-8458d0d09c20" target="_blank">
+          <img src="img/badge-2.png" alt="AWS Certification">
+        </a>
+        <a href="https://www.credly.com/badges/6455b9f1-9fe6-4cb3-9bb6-554517ef1ca4" target="_blank">
+          <img src="img/badge-3.png" alt="Certification">
+        </a>
+      </div>
+
+    </main>
+  </div><!-- /.body -->
+
+  <!-- ── Footer ──────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <a class="footer-link" href="https://github.com/sibasismukherjee" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="#757575"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      github.com/sibasismukherjee
+    </a>
+    <a class="footer-link" href="https://www.linkedin.com/in/sibasis-mukherjee" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="#757575"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      linkedin.com/in/sibasis-mukherjee
+    </a>
+    <a class="footer-link" href="https://twitter.com/Sibasis79487584" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="#757575"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+      @Sibasis79487584
+    </a>
+  </footer>
+
+</div><!-- /.page -->
+</body>
+</html>
