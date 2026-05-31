@@ -150,7 +150,7 @@
 	<!-- Introduction -->
 	<div class="intro section" id="about">
 		<div class="container">
-			<p>Hi, I'm Sibasis — Staff Systems Engineer &amp; Platform SRE</p>
+			<p>Hi, I'm Sibasis — Staff Site Reliability Engineer &amp; Platform Engineer</p>
 			<div class="units-row units-split wrap">
 				<div class="unit-20">
 					<img src="img/resume-profile.png" alt="Avatar">
@@ -159,7 +159,7 @@
 					<h1>Based in Berlin, Germany<br><span id="typed"></span></h1>
 				</div>
 				<p>
-					Staff Systems Engineer with 12+ years in production infrastructure, specializing in large-scale Kubernetes platform engineering and high-stakes SRE. At Delivery Hero's Tech Foundations Domain, I own the K8s infrastructure backbone that sustains global logistics operations — 100+ production clusters, 200+ nodes on average, thousands of workloads, processing 5M+ API requests per hour. I re-architect and redesign critical systems to drive multi-fold reliability improvements and have led incident response on some of the highest revenue-impact events in the company's history, including AWS region outages and cluster-level IP exhaustion — saving millions in potential revenue loss. I build platforms that survive at scale, not just pass a load test.
+					Staff Site Reliability Engineer with 12+ years in production infrastructure across distributed systems at global scale. At Delivery Hero's Tech Foundations Domain, I own the reliability, scalability, and operational posture of a Kubernetes platform processing 5M+ API requests per hour across 100+ production clusters. I define SLOs and error budgets with engineering teams, lead production readiness reviews, and drive incident management from detection through post-mortem — having contained some of the highest revenue-impact failures in the company's history, including AWS region outages and cluster-wide IP exhaustion. Beyond operations, I mentor engineers on reliability practices, re-architect systems for fault-tolerance and efficiency, and build automation that eliminates toil at scale. I build platforms that survive production, not just pass a load test.
 				</p>
 			</div>
 		</div>
@@ -219,6 +219,9 @@
 				<li>Design and own the <strong>observability strategy across the cluster fleet</strong> — aggregating metrics, logs, and traces from 100+ clusters into coherent platform-wide views using Prometheus, Grafana, Datadog, and the ELK stack. Define and track platform-level SLIs and SLOs, implement burn-rate alerting to catch reliability degradation early, and maintain dashboards that serve both on-call engineers and engineering leadership.</li>
 				<li>Drive signal quality over noise — refine alert thresholds and routing across the fleet so that pages are actionable, reduce mean time to detect (MTTD), and build runbooks backed by observability data that make incident response faster and less dependent on tribal knowledge.</li>
 				<li>Architect and implement cluster lifecycle automation, capacity planning, and reliability engineering frameworks at a scale most organizations never encounter.</li>
+				<li>Lead <strong>production readiness reviews and launch assessments</strong> for new services and significant platform changes — evaluating failure modes, scalability limits, observability coverage, and rollback posture before workloads reach production at scale.</li>
+				<li>Define and maintain <strong>SLOs and error budgets</strong> collaboratively with product and engineering teams, translating reliability requirements into actionable targets and burn-rate alerts that inform both on-call response and prioritization decisions.</li>
+				<li><strong>Mentor engineers</strong> on reliability practices — SRE fundamentals, incident command, post-mortem culture, and production-grade design — raising the reliability bar across teams beyond the platform team itself.</li>
 				<li>Partner with product and platform teams across the Foundations Domain to define infrastructure strategy, set reliability standards, and eliminate systemic toil through automation.</li>
 				<li>Drive GitOps adoption and standardization across the cluster fleet using Terraform and AWS-native tooling.</li>
 				<li>Drive <strong>fleet-wide cost optimization</strong> across 100+ clusters through deep cluster utilization analysis — right-sizing node groups, improving workload bin-packing, and designing fault-tolerant topologies that maximize resource efficiency without sacrificing availability guarantees.</li>
@@ -293,7 +296,7 @@
 				</div>
 				<div>
 					<span class="skill-group-label">Observability &amp; Monitoring</span>
-					<span class="skill-group-value">Fleet-scale metrics aggregation (Prometheus + remote write) · SLO/SLI definition &amp; burn-rate alerting · Structured log pipelines (ELK / OpenSearch) · Distributed tracing (OpenTelemetry, Jaeger) · Platform-wide dashboarding (Grafana, Datadog) · Alert quality &amp; noise reduction · MTTD/MTTR optimization · Dynatrace · SysDig · AWS CloudWatch</span>
+					<span class="skill-group-value">Datadog · Fleet-scale metrics aggregation (Prometheus + remote write) · SLO/SLI definition &amp; burn-rate alerting · Structured log pipelines (ELK / OpenSearch) · Distributed tracing (OpenTelemetry) · Platform-wide dashboarding (Grafana) · Alert quality &amp; noise reduction · MTTD/MTTR optimization · SysDig · Dynatrace · AWS CloudWatch</span>
 				</div>
 				<div>
 					<span class="skill-group-label">Networking &amp; Security</span>
@@ -301,7 +304,7 @@
 				</div>
 				<div>
 					<span class="skill-group-label">CI/CD &amp; Developer Platforms</span>
-					<span class="skill-group-value">Jenkins · Drone CI · Spinnaker · Concourse · Bamboo · AWS CodePipeline · Internal Developer Platform design</span>
+					<span class="skill-group-value">GitHub Actions · Jenkins · Drone CI · Spinnaker · Concourse · Bamboo · AWS CodePipeline · Internal Developer Platform design</span>
 				</div>
 				<div>
 					<span class="skill-group-label">Databases &amp; Messaging</span>
@@ -393,7 +396,7 @@
     <script src="js/site.js"></script>
     <script>
 		function newTyped(){}$(function(){$("#typed").typed({
-		strings: ["I run infrastructure at scale.", "100+ K8s clusters in production.", "I lead high-stakes SRE.", "I architect for reliability."],
+		strings: ["I run infrastructure at scale.", "100+ K8s clusters in production.", "I lead high-stakes SRE.", "I define SLOs. I own incidents. I reduce toil.", "I architect for reliability."],
 		typeSpeed:70,backDelay:1800,contentType:"html",loop:!0,resetCallback:function(){newTyped()}}),$(".reset").click(function(){$("#typed").typed("reset")})});
     </script>
 </body>
