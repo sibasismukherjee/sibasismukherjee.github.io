@@ -8,3 +8,4 @@ generate-pdf.mjs
 __pycache__/
 *.pyc
 .playwright/
+linkedin-profile-update.md
