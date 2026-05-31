@@ -3,3 +3,8 @@ node_modules/
 package.json
 package-lock.json
 generate-pdf.mjs
+# python
+.venv/
+__pycache__/
+*.pyc
+.playwright/
