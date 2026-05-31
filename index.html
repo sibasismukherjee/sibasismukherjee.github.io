@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sibasis Mukherjee-Resume</title>
+    <title>Sibasis Mukherjee — Staff Systems Engineer</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="This is a free PSD &amp; HTML template by @afnizarnur">
-    <meta name="author" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Sibasis Mukherjee — Staff Systems Engineer specializing in large-scale Kubernetes platform engineering and high-stakes SRE">
+    <meta name="author" content="Sibasis Mukherjee">
     <link rel="stylesheet" href="css/kube.min.css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link rel="stylesheet" href="css/custom.min.css" />
@@ -16,8 +15,112 @@
 	<script src="js/app.js" defer></script>
 	<style>
 		.intro h1:before {
-			/* Edit this with your name or anything else */
 			content: 'Sibasis';
+		}
+
+		/* Stats bar */
+		.stats-bar {
+			background: #1a1a2e;
+			color: #fff;
+			padding: 2.4em 0 2em;
+		}
+		.stats-bar .container {
+			display: flex;
+			justify-content: space-around;
+			flex-wrap: wrap;
+			gap: 1.2em;
+		}
+		.stat-item {
+			text-align: center;
+			flex: 1;
+			min-width: 130px;
+		}
+		.stat-number {
+			display: block;
+			font-size: 2.4em;
+			font-weight: 700;
+			color: #e8a838;
+			font-family: 'Playfair Display SC', serif;
+			line-height: 1.1;
+		}
+		.stat-label {
+			display: block;
+			font-size: 0.72em;
+			color: #b0b8cc;
+			margin-top: 0.3em;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+		}
+		.stat-divider {
+			width: 1px;
+			background: #333a55;
+			align-self: stretch;
+			margin: 0.4em 0;
+		}
+
+		/* Bullet-style work entries */
+		.work-bullets {
+			list-style: none;
+			padding: 0;
+			margin: 0.6em 0 0 0;
+		}
+		.work-bullets li {
+			padding: 0.25em 0 0.25em 1.2em;
+			position: relative;
+			font-size: 0.95em;
+			line-height: 1.55;
+			color: #444;
+		}
+		.work-bullets li::before {
+			content: '▸';
+			position: absolute;
+			left: 0;
+			color: #e8a838;
+			font-size: 0.85em;
+			top: 0.3em;
+		}
+		.work-bullets li strong {
+			color: #222;
+		}
+
+		/* Skills grid */
+		.skills-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 0.5em 2em;
+			margin-top: 0.5em;
+		}
+		@media (max-width: 640px) {
+			.skills-grid { grid-template-columns: 1fr; }
+			.stat-divider { display: none; }
+		}
+		.skill-group-label {
+			font-weight: 700;
+			font-size: 0.8em;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+			color: #888;
+			margin-top: 1em;
+			display: block;
+		}
+		.skill-group-value {
+			font-size: 0.9em;
+			color: #333;
+			line-height: 1.5;
+		}
+
+		/* Incident callout */
+		.incident-tag {
+			display: inline-block;
+			background: #fff3e0;
+			border-left: 3px solid #e8a838;
+			color: #7a4500;
+			font-size: 0.82em;
+			padding: 0.15em 0.6em;
+			border-radius: 0 3px 3px 0;
+			margin-right: 0.4em;
+			margin-bottom: 0.3em;
+			font-weight: 600;
 		}
 	</style>
 	<script async src="https://api.countapi.xyz/hit/sibasismukherjee.github.io/visits?callback=cb"></script>
@@ -33,8 +136,8 @@
 			    <nav id="navbar-1" class="navbar item-nav">
 				    <ul>
 				        <li class="active"><a href="#about">About</a></li>
-				        <li><a href="#experiences">Experiences</a></li>
-				        <li><a href="#certificates">Professional Certificates</a></li>
+				        <li><a href="#experiences">Experience</a></li>
+				        <li><a href="#certificates">Certificates</a></li>
 				        <li><a href="#skills">Skills</a></li>
 				        <li><a href="#projects">Projects</a></li>
 						<li><a href="#resume">Hire Me</a></li>
@@ -47,17 +150,47 @@
 	<!-- Introduction -->
 	<div class="intro section" id="about">
 		<div class="container">
-			<p>Hi, I’m Sibasis a Cloud DevOps Engineer</p>
+			<p>Hi, I'm Sibasis — Staff Site Reliability Engineer &amp; Platform Engineer</p>
 			<div class="units-row units-split wrap">
 				<div class="unit-20">
 					<img src="img/resume-profile.png" alt="Avatar">
 				</div>
 				<div class="unit-80">
-					<h1>I live in Berlin, Germany<br><span id="typed"></span></h1>
+					<h1>Based in Berlin, Germany<br><span id="typed"></span></h1>
 				</div>
 				<p>
-					Hey There! I am a Multi-Tasking, result-oriented engineer with a keen eye on quality. I have rich experience in developing and consulting for DevOps processes since the past 7 years in many enterprises. I am known to showcase rich cloud architecting and development experience with enterprise customers on their cloud adoption and acceleration journeys. I like developing and designing fault-tolerant, high-performing and resilient applications and platforms that scale with trending business requirements. I am a fan of automation and like to develop event based operation tools that provide deep insights for production workloads on AWS.
+					Staff Site Reliability Engineer with 12+ years of experience designing, operating, and evolving production infrastructure for distributed systems at global scale — spanning large-scale Kubernetes platform engineering, cloud architecture, high-stakes incident command, and reliability practice across hypergrowth environments. At Delivery Hero's Tech Foundations Domain, I own the reliability, scalability, and operational posture of a Kubernetes platform processing 5M+ API requests per hour across 100+ production clusters. I define SLOs and error budgets with engineering teams, lead production readiness reviews, and drive incident management from detection through post-mortem — having contained some of the highest revenue-impact failures in the company's history, including AWS region outages and cluster-wide IP exhaustion. I actively integrate agentic AI into operational workflows — building LLM-powered tooling for alert correlation, incident summarization, and autonomous runbook execution. I build platforms that survive production, not just pass a load test.
 				</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Stats bar -->
+	<div class="stats-bar">
+		<div class="container">
+			<div class="stat-item">
+				<span class="stat-number">100+</span>
+				<span class="stat-label">K8s clusters<br>in production</span>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat-item">
+				<span class="stat-number">200+</span>
+				<span class="stat-label">avg nodes<br>per cluster</span>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat-item">
+				<span class="stat-number">5M+</span>
+				<span class="stat-label">API requests<br>per hour</span>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat-item">
+				<span class="stat-number">12+</span>
+				<span class="stat-label">years in<br>production infra</span>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat-item">
+				<span class="stat-number">$M+</span>
+				<span class="stat-label">revenue saved<br>via incident response</span>
 			</div>
 		</div>
 	</div>
@@ -65,42 +198,77 @@
 	<!-- Work Experience -->
 	<div class="work section second" id="experiences">
 		<div class="container">
-			<h1>Work<br>Experiences</h1>
+			<h1>Work<br>Experience</h1>
+
 			<ul class="work-list">
-				<li>Since Dec, 2021</li>
+				<li>Dec 2021 — Present</li>
 				<li><a href="https://www.deliveryhero.com/">Delivery Hero SE, Berlin</a></li>
-				<li>Staff Systems Engineer II</li>
-				<li>Infrastructure Squad, Logistics Foundations Tribe</li>
-				<li>Owning k8s clusters that are the backbone of all product operations in DH. Leveraging multiple technologies to design and develop infra solutions on AWS</li>
+				<li>Staff Systems Engineer &nbsp;·&nbsp; Tech Foundations Domain</li>
 			</ul>
-			<ul class="work-list">
-				<li>Oct, 2019 - Nov, 2021</li>
+			<ul class="work-bullets">
+				<li>Own and operate <strong>100+ production Kubernetes clusters</strong> averaging 200+ nodes each, running thousands of workloads sustaining <strong>5M+ API requests/hour</strong> — the infrastructure backbone for one of Europe's largest on-demand logistics platforms.</li>
+				<li>Drive <strong>re-architecture and redesign</strong> of critical platform systems, delivering multi-fold improvements in reliability, availability, and operational efficiency across the fleet.</li>
+				<li>Lead <strong>high-stakes incident response</strong> for highest revenue-impact events including AWS region outages and cluster-level IPv4 exhaustion — containing incidents that protected millions in revenue.</li>
+				<li>
+					<span class="incident-tag">AWS Region Outage</span>
+					<span class="incident-tag">IP Exhaustion</span>
+					<span class="incident-tag">Multi-Cluster Failure</span>
+				</li>
+				<li>Managed and executed <strong>EKS version upgrades across the entire 100+ cluster fleet</strong> from EKS 1.21 through 1.32 — coordinating control plane and node group upgrades at scale while maintaining workload availability throughout each upgrade cycle.</li>
+				<li>Developed an internal upgrade automation tool that reduced the end-to-end lead time for a cluster and node upgrade from <strong>2 weeks</strong> (constrained to scheduled maintenance windows) down to <strong>2 hours</strong> — a 10× throughput improvement that decoupled upgrade velocity from maintenance calendar constraints and eliminated the operational backlog across the fleet.</li>
+				<li>Design and own the <strong>observability strategy across the cluster fleet</strong> — defining platform-level SLIs and SLOs, implementing burn-rate alerting, and maintaining dashboards that serve both on-call engineers and engineering leadership across 100+ clusters.</li>
+				<li>Worked extensively to <strong>sustain metrics and log ingestion at platform scale</strong> using Prometheus and Loki — solving high-cardinality ingestion bottlenecks, tuning remote write pipelines, managing label explosion across thousands of workloads, and keeping the observability stack itself reliable under the same traffic pressure it was built to monitor.</li>
+				<li>Drive signal quality over noise — refine alert thresholds and routing across the fleet so that pages are actionable, reduce mean time to detect (MTTD), and build runbooks backed by observability data that make incident response faster and less dependent on tribal knowledge.</li>
+				<li>Architect and implement cluster lifecycle automation, capacity planning, and reliability engineering frameworks at a scale most organizations never encounter.</li>
+				<li>Lead <strong>production readiness reviews and launch assessments</strong> for new services and significant platform changes — evaluating failure modes, scalability limits, observability coverage, and rollback posture before workloads reach production at scale.</li>
+				<li>Define and maintain <strong>SLOs and error budgets</strong> collaboratively with product and engineering teams, translating reliability requirements into actionable targets and burn-rate alerts that inform both on-call response and prioritization decisions.</li>
+				<li><strong>Train and onboard every junior engineer</strong> joining the team — providing structured knowledge transfer on the infrastructure topology, operational caveats, failure patterns unique to the platform, and the institutional context that takes years to accumulate. Ensures new team members become effective contributors quickly and don't learn the hard lessons through production incidents.</li>
+				<li>Actively integrating <strong>agentic AI into operational workflows</strong> — building LLM-powered tooling for automated alert correlation, incident summarization, and runbook execution; exploring MCP server interfaces that expose fleet and observability APIs to AI agents for autonomous diagnosis and remediation.</li>
+				<li>Partner with product and platform teams across the Foundations Domain to define infrastructure strategy, set reliability standards, and eliminate systemic toil through automation.</li>
+				<li>Drive GitOps adoption and standardization across the cluster fleet using Terraform and AWS-native tooling.</li>
+				<li>Drive <strong>fleet-wide cost optimization</strong> across 100+ clusters through deep cluster utilization analysis — right-sizing node groups, improving workload bin-packing, and designing fault-tolerant topologies that maximize resource efficiency without sacrificing availability guarantees.</li>
+				<li>Establish cross-cluster cost visibility and resource attribution to surface waste early, enabling engineering teams to own and optimize their own cloud spend.</li>
+			</ul>
+
+			<ul class="work-list" style="margin-top: 2em;">
+				<li>Oct 2019 — Nov 2021</li>
 				<li><a href="https://cloudreach.com/">Cloudreach GmbH, Berlin</a></li>
-				<li>Cloud Systems Developer</li>
-				<li>Consulting for <a href="https://www.vwfs.com/en/media/stories/2019/zu-besuch.html">VWFS, DU Berlin</a></li>
-				<li>Solution Architecting and Development of a highly available, fault tolerant and optimized API Platform on AWS. Providing a robust platform where contributors can develop on cloud.Take charge of DevOps Processes of the platform that can scale to multi-regions spanning multiple continents.Develop tools and libraries that can accelerate SDLC processes on the said API Platform.</li>
+				<li>Cloud Systems Developer &nbsp;·&nbsp; Consulting for <a href="https://www.vwfs.com/en/media/stories/2019/zu-besuch.html">VW Financial Services</a></li>
 			</ul>
-			<ul class="work-list">
-				<li>Jul, 2017 - Aug, 2019</li>
+			<ul class="work-bullets">
+				<li>Architected and delivered a highly available, multi-region API platform on AWS for VW Financial Services, serving as the cloud development foundation for a major European automotive finance enterprise.</li>
+				<li>Took ownership of DevOps processes, infrastructure-as-code, and SDLC tooling — accelerating delivery velocity and reducing deployment risk across the platform.</li>
+				<li>Conducted <strong>AWS cost optimization</strong> across the platform — identifying over-provisioned compute and database instances, implementing Reserved Instance and Savings Plans coverage, and establishing tagging hygiene for per-service cost attribution across the API estate.</li>
+				<li>Designed monitoring and alerting for the API platform — establishing per-service latency, error rate, and throughput baselines on Datadog and Dynatrace, enabling the team to detect regressions before they reached end users.</li>
+				<li>Developed reusable libraries and internal tooling that shortened onboarding time for platform contributors.</li>
+			</ul>
+
+			<ul class="work-list" style="margin-top: 2em;">
+				<li>Jul 2017 — Aug 2019</li>
 				<li><a href="https://www.tcs.com/">Tata Consultancy Services, Bergen</a></li>
-				<li>Cloud Consultant</li><li>Consulting for <a href="https://www.dnb.no/">DNB</a></li>
-				<li>Took part in a greenfield project to develop a customer centric Banking Application on
-					AWS.Consulting for a major Nordic Bank to develop DevOps Processes for the backend platform.Code all the Infra components from greenfield to production.Drive the Cost Optimization initiative cross project to enhance the architecture further after Go-Live. And drive the Well Architected Review and it's action-points to further strengthen the platform.Drive CI/CD initiatives for multiple projects for both frontends and backends.</li>
-			
+				<li>Cloud Consultant &nbsp;·&nbsp; Consulting for <a href="https://www.dnb.no/">DNB (Nordic Bank)</a></li>
 			</ul>
-			<ul class="work-list">
-				<li>Mar, 2014 - Jun , 2017</li>
+			<ul class="work-bullets">
+				<li>Greenfield build of a customer-centric banking application on AWS for one of the largest Nordic banks — from infrastructure provisioning through production go-live.</li>
+				<li>Led CI/CD initiatives across multiple workstreams (frontend and backend), Well-Architected Review execution, and a cross-project cost optimization program post-launch.</li>
+			</ul>
+
+			<ul class="work-list" style="margin-top: 2em;">
+				<li>Mar 2014 — Jun 2017</li>
 				<li><a href="https://www.tcs.com/">Tata Consultancy Services, Frankfurt</a></li>
-				<li>DevOps Engineer</li><li>Consulting for <a href="https://deutsche-boerse.com/dbg-de/">Deutsche Börse AG</a></li>
-				<li>Consult for a new Product initiative team to setup automation processes. Develop test-suites and automation pipelines to cover various SDLC's. Leverage open source tools to setup the processes. Support the Operational workloads and Maintain them for bugs and patches..</li>
+				<li>DevOps Engineer &nbsp;·&nbsp; Consulting for <a href="https://deutsche-boerse.com/dbg-de/">Deutsche Börse AG</a></li>
+			</ul>
+			<ul class="work-bullets">
+				<li>Set up automation, test suites, and CI/CD pipelines for a new product initiative at Deutsche Börse — a high-compliance financial exchange environment with strict operational standards.</li>
+				<li>Owned operational support and patch management for production workloads throughout the engagement.</li>
 			</ul>
 		</div>
 	</div>
 
-	<!-- Award & certificates -->
+	<!-- Certificates -->
 	<div class="award section second" id="certificates">
 		<ul class="container list-flat">
-			<h1>Professional<br>certificates</h1>
+			<h1>Professional<br>Certificates</h1>
 			<div class="skill-list list-flat" data-iframe-width="150" data-iframe-height="270" data-share-badge-id="18c9b287-28b9-4c24-b17d-b852e9d7f53f" data-share-badge-host="https://www.credly.com"></div><script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
 			<div class="skill-list list-flat" data-iframe-width="150" data-iframe-height="270" data-share-badge-id="9dc7a31b-ce1b-452a-9ec6-8458d0d09c20" data-share-badge-host="https://www.credly.com"></div><script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
 			<div class="skill-list list-flat" data-iframe-width="150" data-iframe-height="270" data-share-badge-id="6455b9f1-9fe6-4cb3-9bb6-554517ef1ca4" data-share-badge-host="https://www.credly.com"></div><script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
@@ -111,38 +279,52 @@
 	<div class="skills section second" id="skills">
 		<div class="container">
 			<h1>Technical<br>Skills</h1>
-			<ul class="skill-list list-flat">
-				<li>SaaS/IaaS/PaaS</li>
-				<li>AWS, MacStadium, BitRise, Datadog, Mulesoft, Dynatrace, Splunk</li>
-			</ul>
-			<ul class="skill-list list-flat">
-				<li>Tools and Technologies</li>
-				<li>Terraform, Cloudformation, GitOps, Atlassian Agile Toolchain</li>
-			</ul>
-			<ul class="skill-list list-flat">
-				<li>Database</li>
-				<li>AWS RDS, Aurora postgres and mysql, DynamoDB, Elasticache Redis/Memcached</li>
-			</ul>
-			<ul class="skill-list list-flat">
-				<li>CI/CD</li>
-				<li>Jenkins, Drone CI, Spinnaker, Concourse, Bamboo, AWS Code*</li>
-			</ul>
-			<ul class="skill-list list-flat">
-				<li>Programming Languages</li>
-				<li>Python JavaScript Bash</li>
-			</ul>
-			<ul class="skill-list list-flat">
-				<li>Monitoring Tools</li>
-				<li>Datadog, ELK Stack, Grafana, Dynatrace, SysDig, Prometheus, Splunk AWS Cloudwatch</li>
-			</ul>
-			<ul class="skill-list list-flat">
-				<li>Container Orchestration and API Management Tools</li>
-				<li>Kubernetes, AWS ECS, AWS Lambda, Kong, AWS API-Gateway, Mulesoft</li>
-			</ul>
-			<ul class="skill-list list-flat">
-				<li>Security</li>
-				<li>Dome9, CloudCustodian, Wapiti,AWS GuardDuty, AWS Cloudtrail</li>
-			</ul>
+			<div class="skills-grid">
+				<div>
+					<span class="skill-group-label">Kubernetes &amp; Container Orchestration</span>
+					<span class="skill-group-value">EKS · kOps · Cluster Lifecycle Automation · Fleet Management (100+ clusters) · Helm · Custom Controllers · AWS ECS</span>
+				</div>
+				<div>
+					<span class="skill-group-label">Cloud Platform</span>
+					<span class="skill-group-value">AWS (EC2, VPC, IAM, EKS, RDS, S3, Lambda, Route53, Transit Gateway, Direct Connect) · Multi-region architecture · Cost Optimization</span>
+				</div>
+				<div>
+					<span class="skill-group-label">Infrastructure as Code &amp; GitOps</span>
+					<span class="skill-group-value">Terraform · CloudFormation · ArgoCD · FluxCD · GitOps workflows at fleet scale</span>
+				</div>
+				<div>
+					<span class="skill-group-label">Site Reliability Engineering</span>
+					<span class="skill-group-value">Incident Command · Capacity Planning · SLO/SLI/Error Budget frameworks · Chaos Engineering · Runbook Automation · Post-mortem culture</span>
+				</div>
+				<div>
+					<span class="skill-group-label">Observability &amp; Monitoring</span>
+					<span class="skill-group-value">Datadog · Prometheus (remote write, high-cardinality tuning) · Loki (log ingestion at scale) · SLO/SLI definition &amp; burn-rate alerting · Structured log pipelines (ELK / OpenSearch) · Distributed tracing (OpenTelemetry) · Platform-wide dashboarding (Grafana) · Alert quality &amp; noise reduction · MTTD/MTTR optimization · SysDig · Dynatrace · AWS CloudWatch</span>
+				</div>
+				<div>
+					<span class="skill-group-label">Networking &amp; Security</span>
+					<span class="skill-group-value">VPC Design · CIDR Planning · IPv4 Exhaustion Mitigation · Network Policies · AWS GuardDuty · CloudTrail · CloudCustodian</span>
+				</div>
+				<div>
+					<span class="skill-group-label">CI/CD &amp; Developer Platforms</span>
+					<span class="skill-group-value">GitHub Actions · Jenkins · Drone CI · Spinnaker · Concourse · Bamboo · AWS CodePipeline · Internal Developer Platform design</span>
+				</div>
+				<div>
+					<span class="skill-group-label">Databases &amp; Messaging</span>
+					<span class="skill-group-value">AWS RDS · Aurora (PostgreSQL / MySQL) · DynamoDB · ElastiCache (Redis / Memcached) · Kafka</span>
+				</div>
+				<div>
+					<span class="skill-group-label">Agentic AI &amp; LLM Tooling</span>
+					<span class="skill-group-value">AI-assisted incident triage · LLM-powered runbook automation · MCP server design for infrastructure APIs · Agentic observability workflows · AI-augmented anomaly detection</span>
+				</div>
+				<div>
+					<span class="skill-group-label">Languages &amp; Scripting</span>
+					<span class="skill-group-value">Go · Python · Bash · JavaScript</span>
+				</div>
+				<div>
+					<span class="skill-group-label">API &amp; Service Mesh</span>
+					<span class="skill-group-value">Kong · AWS API Gateway · Mulesoft · Istio · Service mesh observability</span>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -184,24 +366,21 @@
 		</div>
 	</div>
 
-	<!-- Quote-->
-
+	<!-- Hire Me -->
 	<div class="container" id="resume">
 		<h1>Hire Me</h1>
 		<ul class="skill-list list-flat">
-			<li>Do you like what I have been doing and you think I can contribute to your success story?</li>
-			<li>Then let's get in touch...</li>
+			<li>Building infrastructure at real scale is hard. If you need someone who has done it and can do it again —</li>
+			<li>let's talk.</li>
 		</ul>
-		<a href="https://sibasismukherjee.github.io/sibasismukherjee.pdf" class="button">Click Here To Download My Resume!</a>
+		<a href="https://sibasismukherjee.github.io/sibasismukherjee.pdf" class="button">Download Resume (PDF)</a>
 	</div>
-	
 
 	<footer>
 		<div class="container">
 			<div class="units-row">
 			    <div class="unit-50">
-			    	<p> You can reach out to me, 
-					 I love talking all things tech, and I am a foodie and a wanderer by heart!</p>
+			    	<p>I love talking all things infrastructure, reliability engineering, and distributed systems — and yes, I'm a foodie and a wanderer too.</p>
 					<p>Site Views: <span id="visits"></span></p>
 			    </div>
 			    <div class="unit-50">
@@ -223,10 +402,8 @@
     <script src="js/site.js"></script>
     <script>
 		function newTyped(){}$(function(){$("#typed").typed({
-		// Change to edit type effect
-		strings: ["I do stuff", "on the cloud"],
-
-		typeSpeed:90,backDelay:700,contentType:"html",loop:!0,resetCallback:function(){newTyped()}}),$(".reset").click(function(){$("#typed").typed("reset")})});
+		strings: ["I run infrastructure at scale.", "100+ K8s clusters in production.", "I lead high-stakes SRE.", "I define SLOs. I own incidents. I reduce toil.", "I architect for reliability."],
+		typeSpeed:70,backDelay:1800,contentType:"html",loop:!0,resetCallback:function(){newTyped()}}),$(".reset").click(function(){$("#typed").typed("reset")})});
     </script>
 </body>
 </html>
